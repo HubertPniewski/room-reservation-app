@@ -16,8 +16,12 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {'fields': ('email', 'password', 'profile_image')}),
-        ('Personal Data', {'fields': ('first_name', 'last_name', 'phone_number', 'address', 'town')}),
-        ('Permissions', {'fields': ('is_active', 'is_staff', 'is_superuser')}),
+        ('Personal Data', {'fields': ('first_name', 'last_name', 'phone_number', 'address', 'town', 'date_joined')}),
+        ('Permissions', {'fields': ('terms_accepted', 'is_active', 'is_staff', 'is_superuser',)}),
+    )
+    readonly_fields = (
+        'date_joined',
+        'terms_accepted',
     )
 
     add_fieldsets = (

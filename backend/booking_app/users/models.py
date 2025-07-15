@@ -36,6 +36,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         blank=True,
         null=True
     )
+    terms_accepted = models.BooleanField(default=False)
     
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)

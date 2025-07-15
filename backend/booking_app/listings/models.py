@@ -30,7 +30,7 @@ class RentObject(models.Model):
     
 
 class RentObjectImage(models.Model):
-    rent_object = models.ForeignKey(RentObject, on_delete=models.CASCADE, related_name='iamges')
+    rent_object = models.ForeignKey(RentObject, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='rent_objects/')
     uploaded_at = models.DateField(auto_now_add=True)
 

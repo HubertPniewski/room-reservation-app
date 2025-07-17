@@ -10,7 +10,7 @@ class ReadOnlyOrIsAuthenticated(permissions.BasePermission):
         return request.user and request.user.is_authenticated
 
 
-class RentObjectList(generics.ListCreateAPIView):
+class RentObjectListView(generics.ListCreateAPIView):
     queryset = RentObject.objects.all()
     serializer_class = RentObjectSerializer
     permission_classes = [ReadOnlyOrIsAuthenticated]
@@ -19,12 +19,12 @@ class RentObjectList(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class RentObjectDetail(generics.RetrieveUpdateDestroyAPIView):
+class RentObjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = RentObject.objects.all()
     serializer_class = RentObjectSerializer
 
 
-class MyRentObjectList(generics.ListAPIView):
+class MyRentObjectListView(generics.ListAPIView):
     serializer_class = RentObjectSerializer
     permission_classes = [permissions.IsAuthenticated]
 

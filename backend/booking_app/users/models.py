@@ -28,8 +28,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=35)
     last_name = models.CharField(max_length=35)
     phone_number = PhoneNumberField(region='PL')
-    address = models.CharField(max_length=200)
-    town = models.CharField(max_length=58)
     date_joined = models.DateTimeField(default=timezone.now, editable=False)
     profile_image = models.ImageField(
         upload_to='user_profiles/',
@@ -49,7 +47,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         indexes = [
             models.Index(fields=['email']),
-            models.Index(fields=['town']),
         ]
 
     def __str__(self):

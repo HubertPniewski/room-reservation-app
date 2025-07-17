@@ -5,9 +5,9 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from listings import views
 
 urlpatterns = [
-    path('', views.RentObjectList.as_view()),
-    path('<int:pk>/', views.RentObjectDetail.as_view()),
-    path('my-objects/', views.MyRentObjectList.as_view(), name='my-rent-objects'),
+    path('', views.RentObjectListView.as_view()),
+    path('<int:pk>/', views.RentObjectDetailView.as_view()),
+    path('my-objects/', views.MyRentObjectListView.as_view(), name='my-rent-objects'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = format_suffix_patterns(urlpatterns)

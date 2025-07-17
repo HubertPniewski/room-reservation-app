@@ -13,7 +13,8 @@ password: Admin1
 *'POST auth/token/refresh/'* - refresh token 
 
 ## Users
-*'GET users/id/'* - get user details
+*'GET users/id/'* - get user public details
+*'GET users/id/full'* - get user public details + contact (authorization required)
 *'POST users/'* - add new user 
 
 ## Listings
@@ -23,6 +24,10 @@ password: Admin1
 *'GET listings/my-objects/'* - list of all current user's objects (authorization required)
 
 ## Reservations
-
+*'GET reservations/details/id'* - get reservation details (authorization required)
+*'PATH/PUT reservations/details/id'* - edit reservation details (authorization required)
+*'DELETE reservations/details/id'* - delete reservation details (authorization required)
+*'GET reservations/my-reservations/'* - get all my reservations (authorization required)
+*'POST reservations/'* - add new reservation (authorization required)
 
 ## Reviews

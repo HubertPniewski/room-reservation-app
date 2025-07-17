@@ -2,7 +2,7 @@ from django.db import models
 
 class Reservation(models.Model):
     object = models.ForeignKey('listings.RentObject', on_delete=models.PROTECT, related_name='reservations')
-    user = models.OneToOneField('users.User', on_delete=models.CASCADE, related_name='reservations')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='reservations')
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
 

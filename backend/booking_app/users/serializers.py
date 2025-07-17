@@ -3,23 +3,33 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
             'id',
-            'email',
             'first_name',
             'last_name',
-            'phone_number',
-            'address',
-            'town',
             'date_joined',
             'profile_image',
-            'objects',
-            'terms_accepted',
+            'rental_objects',
         )
         read_only_fields = ['date_joined']
+
+
+class UserFullSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'phone_number',
+            'date_joined',
+            'profile_image',
+            'rental_objects',
+        )
 
 
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -33,8 +43,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'phone_number',
-            'address',
-            'town',
             'profile_image',
             'password',
             'terms_accepted',
@@ -51,8 +59,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             first_name = validated_data.get('first_name', ''),
             last_name = validated_data.get('last_name', ''),
             password = validated_data['password'],
-            address = validated_data.get('address', ''),
-            town = validated_data.get('town', ''),
             profile_image = validated_data.get('profile_image', ''),
             phone_number = validated_data.get('phone_number', ''),
             terms_accepted = validated_data.get('terms_accepted', ''),

@@ -25,7 +25,7 @@ class RentObjectSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'rental_type',
-            'owner',# = serializers.ReadOnlyField(source='owner.email'),
+            'owner',
             'address',
             'town',
             'day_price_cents',

@@ -11,3 +11,9 @@ class RentObjectImageInline(admin.TabularInline):
 class RentObjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'rental_type', 'owner', 'town')
     inlines = [RentObjectImageInline]
+
+    @admin.display(description='Day price')
+    def formatted_day_price_cents(self, obj):
+        if obj.day_price_cents is not None:
+            return f'{obj.day_price_cents/100:.2f} zł'
+        return '-'

@@ -6,8 +6,8 @@ from users import views
 
 
 urlpatterns = [
-    path('<int:pk>/', views.UserPublicDetailView.as_view()),
-    path('<int:pk>/full', views.UserFullDetailView.as_view()),
+    path('me/', views.UserMeRedirectView.as_view()),
+    path('<int:pk>/', views.UserDetailView.as_view()),
     path('', views.UserRegisterView.as_view()),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

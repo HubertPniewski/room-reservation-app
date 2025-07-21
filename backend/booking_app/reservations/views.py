@@ -27,9 +27,18 @@ class ReservationDetailView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class MyReservationsView(generics.ListAPIView):
-    serializer_class = IdOnlyReservationSerializer
+    serializer_class = ReservationSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         return Reservation.objects.filter(user=self.request.user)
+    
+
+class MyObjectsReservationsView(generics.ListAPIView):
+    serializer_class = ReservationSerializer
+    permission_classes = [CanViewFullDetails]
+
+    def get_queryset(self):
+        return Reservation.objects.filter(object__owner=self.request.user)
+
     

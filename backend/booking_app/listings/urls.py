@@ -7,6 +7,7 @@ from listings import views
 urlpatterns = [
     path('', views.RentObjectListView.as_view()),
     path('<int:pk>/', views.RentObjectDetailView.as_view()),
+    path('<int:pk>/edit', views.EditDeleteRentObjectView.as_view()),
     path('my-objects/', views.MyRentObjectListView.as_view(), name='my-rent-objects'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

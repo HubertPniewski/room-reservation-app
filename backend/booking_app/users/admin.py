@@ -37,14 +37,14 @@ class UserAdmin(BaseUserAdmin):
     )
     readonly_fields = (
         'date_joined',
-        'terms_accepted',
+        #'terms_accepted',
         'id',
     )
     inlines = [RentObjectInline]
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')
+            'fields': ('email', 'first_name', 'last_name', 'phone_number', 'password1', 'password2', 'terms_accepted',)
         }),
     )
     

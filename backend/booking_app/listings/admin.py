@@ -9,7 +9,7 @@ class RentObjectImageInline(admin.TabularInline):
 
 @admin.register(RentObject)
 class RentObjectAdmin(admin.ModelAdmin):
-    list_display = ('name', 'rental_type', 'owner', 'town')
+    list_display = ('name', 'rental_type', 'owner', 'town', 'id')
     inlines = [RentObjectImageInline]
 
     @admin.display(description='Day price')

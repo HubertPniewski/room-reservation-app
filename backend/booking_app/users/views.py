@@ -47,7 +47,11 @@ class UserMeRedirectView(APIView):
 # nowy widok
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated(), IsSelf()]
 
     def get_serializer_class(self):
         user = self.request.user
@@ -59,19 +63,19 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             return UserPublicSerializer
 
-    def check_object_permissions(self, request, obj):
-        if request.method in ['PUT', 'PATCH', 'DELETE']:
-            if obj != request.user:
-                self.permission_denied(
-                    request,
-                    message="You can edit only your own profile."
-                )
-        elif request.method == 'GET':
-            if obj == request.user:
-                return
-            elif not CanViewFullDetails().has_object_permission(request, self, obj):
-                self.permission_denied(
-                    request,
-                    message="You have no access to this user's full data."
-                )
+    # def check_object_permissions(self, request, obj):
+    #     if request.method in ['PUT', 'PATCH', 'DELETE']:
+    #         if obj != request.user:
+    #             self.permission_denied(
+    #                 request,
+    #                 message="You can edit only your own profile."
+    #             )
+    #     elif request.method == 'GET':
+    #         if obj == request.user:
+    #             return
+    #         elif not CanViewFullDetails().has_object_permission(request, self, obj):
+    #             self.permission_denied(
+    #                 request,
+    #                 message="You have no access to this user's full data."
+    #             )
     

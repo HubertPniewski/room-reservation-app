@@ -63,19 +63,4 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
         else:
             return UserPublicSerializer
 
-    # def check_object_permissions(self, request, obj):
-    #     if request.method in ['PUT', 'PATCH', 'DELETE']:
-    #         if obj != request.user:
-    #             self.permission_denied(
-    #                 request,
-    #                 message="You can edit only your own profile."
-    #             )
-    #     elif request.method == 'GET':
-    #         if obj == request.user:
-    #             return
-    #         elif not CanViewFullDetails().has_object_permission(request, self, obj):
-    #             self.permission_denied(
-    #                 request,
-    #                 message="You have no access to this user's full data."
-    #             )
     

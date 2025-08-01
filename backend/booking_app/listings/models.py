@@ -17,6 +17,7 @@ class RentObject(models.Model):
     town = models.CharField(max_length=58)
     day_price_cents = models.IntegerField()
     description = models.TextField(blank=True)
+    reservation_edit_deadline = models.IntegerField(default=7)
 
 
     class Meta:

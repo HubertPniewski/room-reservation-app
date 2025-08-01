@@ -52,8 +52,8 @@ class ReservationsTests(APITestCase):
         self.reservation1 = Reservation.objects.create(
             object=self.rent_object1,
             user=self.user2,
-            start_date_time="2025-07-23T09:28:37.766Z",
-            end_date_time="2025-07-25T09:28:37.766Z"
+            start_date_time="2045-07-23T09:28:37.766Z",
+            end_date_time="2045-07-25T09:28:37.766Z"
         )
         self.reservation2 = Reservation.objects.create(
             object=self.rent_object1,
@@ -142,12 +142,12 @@ class ReservationsTests(APITestCase):
         url = f"/reservations/{self.reservation1.id}/"
         data = {
             "object": f"{self.rent_object1.id}",
-            "start_date_time": "2025-08-27T09:28:37.766Z",
-            "end_date_time": "2025-08-29T09:28:37.766Z"
+            "start_date_time": "2045-08-27T09:28:37.766Z",
+            "end_date_time": "2045-08-29T09:28:37.766Z"
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['start_date_time'], '2025-08-27T09:28:37.766000Z')
+        self.assertEqual(response.data['start_date_time'], '2045-08-27T09:28:37.766000Z')
 
     # 10. edit others reservation
     def test_edit_others_reservation(self):

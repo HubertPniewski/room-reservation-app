@@ -1,0 +1,49 @@
+.searchBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  background-color: #b9b9b985;
+  padding: 15px;
+  border-radius: 8px;
+  justify-content: center;
+  margin: 20px;
+}
+
+.searchBar input,
+.searchBar select {
+  padding: 10px;
+  font-size: 1rem;
+  min-width: 150px;
+  flex: 1;
+  height: 40px;
+}
+
+.searchBar button {
+  padding: 10px 20px;
+  background-color: rgb(0, 112, 79);
+  color: white;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  height: 40px;
+}
+
+.searchBar button:hover {
+  background-color: #004931;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  align-items: stretch;
+  min-width: 130px;
+}
+
+.formField label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  color: #e7e7e7;
+}

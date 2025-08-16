@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import RootLayout from './RootLayout';
 import Home from "../pages/Home";
-import Login from "../features/auth/Login";
-import Register from "../features/auth/Register";
+import LoginPage from "../pages/LoginPage";
 import NotFound from "../pages/NotFound";
+import MyAccount from "../pages/MyAccount";
+import RegisterPage from "../pages/RegisterPage";
 
 const router = createBrowserRouter([
   {
@@ -12,8 +13,9 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'login', element: <Login /> },
-      { path: 'register', element: <Register /> },
+      { path: 'login', element: <LoginPage /> },
+      { path: 'profile', element: <MyAccount /> },
+      { path: 'register', element: <RegisterPage /> },
     ],
   },
 ]);

@@ -1,5 +1,7 @@
+launch django server: python manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+
 # room-reservation-app
-A simple room/apartment reservation app, using Django as a Backend and React as a frontent.
+A simple room/apartment reservation app, using Django as a Backend and React as a frontend.
 
 ## to login to the admin panel use:
 email: admin1@admin1.com

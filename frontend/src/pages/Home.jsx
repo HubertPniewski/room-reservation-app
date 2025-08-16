@@ -11,7 +11,7 @@ function Home() {
   };
 
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/listings/')
+    fetch('https://127.0.0.1:8000/listings/')
       .then((res) => res.json())
       .then((data) => {
         setObjects(data.results);

@@ -1,9 +1,13 @@
 from .models import User
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from .serializers import UserPublicSerializer, UserFullSerializer, UserRegistrationSerializer
 from reservations.models import Reservation
 from django.shortcuts import redirect
 from rest_framework.views import APIView
+from rest_framework.response import Response
+from django.middleware import csrf
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework.permissions import AllowAny
 
 
 class CanViewFullDetails(permissions.BasePermission):
@@ -44,7 +48,6 @@ class UserMeRedirectView(APIView):
         return redirect(f'/users/{request.user.id}/')
     
 
-# nowy widok
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
 
@@ -64,3 +67,83 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
             return UserPublicSerializer
 
     
+class LoginView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+        serializer = TokenObtainPairSerializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception as e:
+            return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        tokens = serializer.validated_data
+        user = serializer.user
+
+        resp = Response({
+            "detail": "Logged in",
+            "user": UserFullSerializer(user).data
+        }, status=status.HTTP_200_OK)
+
+        resp.set_cookie(
+            "access",
+            tokens["access"],
+            httponly=True,
+            secure=True,
+            samesite="None",
+            max_age=900, # 15 minutes
+            path="/",
+        )
+
+        resp.set_cookie(
+            "refresh",
+            tokens["refresh"],
+            httponly=True,
+            secure=True,
+            samesite="None",
+            max_age=1296000, # 15 days
+            path="/auth/token/refresh/",
+        )
+        
+        # ensure csrf cookie is set (non-httponly)
+        csrf.get_token(request)
+
+        return resp
+    
+
+class CookieTokenRefreshView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        refresh = request.COOKIES.get("refresh")
+        if not refresh:
+            return Response({"detail": "Refresh token missing"}, status=status.HTTP_401_UNAUTHORIZED)
+        from rest_framework_simplejwt.serializers import TokenRefreshSerializer
+
+        serializer = TokenRefreshSerializer(data={"refresh": refresh})
+        try:
+            serializer.is_valid(raise_exception=True)
+        except Exception:
+            return Response({"detail": "Invalid refresh"}, status=status.HTTP_401_UNAUTHORIZED)
+        
+        access = serializer.validated_data["access"]
+        resp = Response({"detail": "Token refreshed"}, status=status.HTTP_200_OK)
+        resp.set_cookie(
+            "access",
+            access,
+            httponly=True,
+            secure=True,
+            samesite="None",
+            max_age=900, # 15 minutes
+            path="/",
+        )
+        return resp
+    
+class LogoutView(APIView):
+    def post(self, request):
+        resp = Response({"detail": "Logged out"}, status=status.HTTP_200_OK)
+        resp.delete_cookie("access", path="/")
+        resp.delete_cookie("refresh", path="/auth/token/refresh/")
+        return resp

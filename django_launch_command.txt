@@ -1,0 +1,1 @@
+python manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem

@@ -1,0 +1,42 @@
+h2, h3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rentalsBar {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.rentalsBarInside {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  padding: 5px;
+}
+
+.addButton {
+  width: 100px;
+  transition: 0.15s;
+}
+
+.editAccountButton {
+  min-width: 50%;
+  transition: 0.15s;
+  padding: 0 30px;
+  align-items: center;
+}
+
+.editAccountDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}

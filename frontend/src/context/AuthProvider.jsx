@@ -29,7 +29,22 @@ export function AuthProvider({ children }) {
       body: JSON.stringify({ email, password }),
     });
 
-    if (!res.ok) throw new Error("Login failed");
+    if (!res.ok) {
+      let errMessage = "Login failed";
+
+      try {
+        const errData = await res.json();
+
+        if (errData.detail) {
+          errMessage = errData.detail;
+        } else {
+          errMessage = JSON.stringify(errData);
+        }
+      } catch (err) {
+        errMessage = err.message;
+      }
+      throw new Error(errMessage);
+    }
 
     // get user after login
     const meRes = await fetch("https://127.0.0.1:8000/users/me/", {
@@ -59,9 +74,22 @@ export function AuthProvider({ children }) {
       credentials: "include",
     });
      
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.detail || "Registration failed");
+    if (!res.ok) {   
+      let errMessage = "Registration failed";
+      try {
+        const errData = await res.json();
+
+        if (errData.detail) {
+          errMessage = errData.detail;
+          
+        } else {
+          errMessage = JSON.stringify(errData);
+          console.log(errMessage);
+        }
+      } catch (err) {
+        errMessage = err.message;
+      }
+      throw new Error(errMessage);
     }
 
     alert("Registration succeeded!");

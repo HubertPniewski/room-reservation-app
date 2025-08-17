@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 
 function RegisterForm() {
+  const navigate = useNavigate();
   const { register } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,17 +15,23 @@ function RegisterForm() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profileImage, setProfileImage] = useState("");
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [invalidPhoneNumber, setInvalidPhoneNumber] = useState(false);
+  const [emailTaken, setEmailTaken] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
 
     if (!termsAccepted) {
-      alert("You must accepted the terms!");
+      alert("You must accept the terms!");
+      setEmailTaken(false);
+      setInvalidPhoneNumber(false);
       return;
     }
 
     if (password !== password2) {
       alert("Passwords are not the same!");
+      setEmailTaken(false);
+      setInvalidPhoneNumber(false);
       return;
     }
 
@@ -38,13 +46,27 @@ function RegisterForm() {
       formData.append("profile_image", profileImage);
     }
 
-    await register(formData);
+    try {
+      await register(formData);
+      navigate("/login");
+    } catch (err) {
+      if (err.message == "{\"phone_number\":[\"The phone number entered is not valid.\"]}") {
+        setInvalidPhoneNumber(true);
+      } else {
+        setInvalidPhoneNumber(false);
+      }
+      if (err.message == "{\"email\":[\"user with this email already exists.\"]}") {
+        setEmailTaken(true);
+      } else {
+        setEmailTaken(false);
+      }
+    }
   }
 
   return (
     <div>
-      <h1>Register</h1>
-      <form className={classes.form} onSubmit={handleSubmit}>
+      <form autoComplete="off" className={classes.form} onSubmit={handleSubmit}>
+        <h2>Register</h2>
         <label htmlFor="firstName">First name<span>*</span></label>
         <input name="firstName" placeholder="First name" value={firstName} onChange={e => setFirstName(e.target.value)} required />
 
@@ -52,7 +74,18 @@ function RegisterForm() {
         <input name="lastName" placeholder="Last name" value={lastName} onChange={e => setLastName(e.target.value)} required />
 
         <label htmlFor="email">Email<span>*</span></label>
-        <input name="email" type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <input 
+          name="email" 
+          type="email" 
+          placeholder="Email" 
+          value={email} 
+          onChange={e => setEmail(e.target.value)} 
+          autoComplete="off"
+          onInvalid={e => e.target.setCustomValidity("Please enter a valid email address")}
+          onInput={e => e.target.setCustomValidity("")}
+          required 
+        />
+        {emailTaken && <p className={classes.invalidCredentials}>An account with this email already exists</p>}
 
         <label htmlFor="password">Password<span>*</span></label>
         <input name="password" type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required />
@@ -60,8 +93,9 @@ function RegisterForm() {
         <label htmlFor="repeatPassword">Repeat password<span>*</span></label>
         <input name="repeatPassword" type="password" placeholder="Repeat password" value={password2} onChange={e => setPassword2(e.target.value)} required />
 
-        <label htmlFor="phoneNumber">Phone number<span>*</span></label>
+        <label htmlFor="phoneNumber">Phone number with area code (eg. +48XXXXXXXXX)<span>*</span></label>
         <input name="phoneNumber" type="tel" placeholder="Phone number" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} required />
+        {invalidPhoneNumber && <p className={classes.invalidCredentials}>Invalid phone number</p>}
 
         <label htmlFor="profileImage">Profile image (not required)</label>
         <input

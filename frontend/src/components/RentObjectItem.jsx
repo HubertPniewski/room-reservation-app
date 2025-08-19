@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom';
 import classes from './RentObjectItem.module.css';
 
 function RentObjectItem({ object }) {
   return (
-    <div className={classes.container}>
+    <Link to={"/listings/" + object.id} className={classes.container}>
       <h2 className={classes.header}>{object.name}</h2>
 
       <div className={classes.imageWrapper}>
@@ -18,7 +19,7 @@ function RentObjectItem({ object }) {
         <p>{object.town}</p>
         <p>Reviews</p>
       </div>
-    </div>
+    </Link>
   );
 }
 

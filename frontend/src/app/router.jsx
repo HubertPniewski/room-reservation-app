@@ -5,6 +5,7 @@ import LoginPage from "../pages/LoginPage";
 import NotFound from "../pages/NotFound";
 import MyAccount from "../pages/MyAccount";
 import RegisterPage from "../pages/RegisterPage";
+import RentObjectDetails from "../pages/RentObjectDetails";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <LoginPage /> },
       { path: 'profile', element: <MyAccount /> },
       { path: 'register', element: <RegisterPage /> },
+      { path: "listings/:id", element: <RentObjectDetails />},
     ],
   },
 ]);

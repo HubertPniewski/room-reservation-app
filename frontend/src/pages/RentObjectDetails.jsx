@@ -1,19 +1,39 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import PhotoGallery from "../components/PhotoGallery";
 import classes from "./RentObjectDetails.module.css";
+import defaultAvatar from "../assets/default_avatar.png";
+import DOMPurify from 'dompurify';
 
 function RentObjectDetails() {
   const { id } = useParams();
   const [object, setObject] = useState(null);
+  const [objectOwner, setObjectOwner] = useState(null);
+
+  function formatText(text) {
+  if (!text) return '';
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
+    .replace(/\*(.*?)\*/g, '<em>$1</em>');            // *italic*
+}
 
   useEffect(() => {
     fetch(`https://127.0.0.1:8000/listings/${id}/`)
       .then(res => res.json())
       .then(data => {
         setObject(data);
+        if (!data?.owner) return null;
+        return fetch(`https://127.0.0.1:8000/users/${data.owner}`);
       })
+      .then(res => (res ? res.json() : null))
+      .then(data => {
+        if (data) {
+          setObjectOwner(data);
+        }
+      })
+      .catch(err => console.error(err));
   }, [id]);
+
 
   if (!object) {
     return <p>Failed to load the object, please try again later.</p>;
@@ -25,9 +45,31 @@ function RentObjectDetails() {
       <PhotoGallery photos={object.images} />
       <h2 className={classes.details}><span className={classes.detailColor}>Address:</span> {object.address}, {object.town}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Rental type:</span> {object.rental_type}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Rooms:</span> {object.rooms}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Area:</span> {object.area} m²</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Price:</span> {object.day_price_cents/100} zł / day</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Check in/out hours:</span> {object.check_in_out_start_hour.substring(0,5)} - {object.check_in_out_end_hour.substring(0,5)}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Own kitchen:</span> {object.own_kitchen ? "✔" : "✘"}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Own bathroom:</span> {object.own_bathroom ? "✔" : "✘"}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Parking place:</span> {object.parking_place ? "✔" : "✘"}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Pets allowed:</span> {object.pets_allowed ? "✔" : "✘"}</h2>
       <h3 className={classes.desc}>Description:</h3>
-      <p>{object.description}</p>
+      <p
+        style={{ whiteSpace: 'pre-line', lineHeight: '1.4' }}
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(formatText(object?.description)),
+        }}
+      ></p>
+      <Link to={objectOwner?.id ? "/users/" + objectOwner.id : ""} className={classes.ownerLink}>
+        <h3 className={classes.owner}>Owner</h3>
+        {objectOwner ? 
+          <div className={classes.ownerContainer}>
+            <img className={classes.avatar} src={objectOwner.profile_image ? objectOwner.profile_image : defaultAvatar} />
+            <h2 className={classes.userName}>{objectOwner.first_name} {objectOwner.last_name}</h2>
+          </div> :
+          <p>Loading...</p>
+        }
+      </Link>
     </div>
   );
   

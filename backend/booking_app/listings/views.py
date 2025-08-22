@@ -39,3 +39,12 @@ class MyRentObjectListView(generics.ListAPIView):
     def get_queryset(self):
         return RentObject.objects.filter(owner=self.request.user)
     
+
+class RentObjectsByUsersId(generics.ListAPIView):
+    serializer_class = RentObjectSerializer
+    permission_classes = []
+
+    def get_queryset(self):
+        user_id = self.kwargs.get("user_id")
+        return RentObject.objects.filter(owner=user_id)
+    

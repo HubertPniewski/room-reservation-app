@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import MyObjectsList from "../components/MyObjectsList";
 import UserProfile from "../components/UserProfile";
 import classes from "./MyAccount.module.css";
-import MyObjectsList from "../components/MyObjectsList";
-import { Link } from "react-router-dom";
 
 function MyAccount() {
   const [user, setUser] = useState(null);
@@ -40,7 +40,6 @@ function MyAccount() {
 
   return (
     <>
-      <h2>Your account</h2>
       {user ? <UserProfile data={user} /> : <p>Loading...</p>}
       <div className={classes.editAccountDiv}>
         <Link>

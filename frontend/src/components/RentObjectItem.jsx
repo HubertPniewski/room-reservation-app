@@ -16,7 +16,7 @@ function RentObjectItem({ object }) {
       
       <div className={classes.footer}>
         <p><span className={classes.price}>{(object.day_price_cents)/100} PLN</span> / day</p>
-        <p>{object.town}</p>
+        <p>{object.rental_type}, {object.rooms} rooms, {object.town}</p>
         <p>Reviews</p>
       </div>
     </Link>

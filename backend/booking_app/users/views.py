@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from django.middleware import csrf
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.permissions import AllowAny
+from rest_framework.exceptions import ValidationError
 
 
 class CanViewFullDetails(permissions.BasePermission):
@@ -76,7 +77,9 @@ class LoginView(APIView):
         serializer = TokenObtainPairSerializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
-        except Exception as e:
+        except ValidationError as e:
+            return Response(e.detail, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
             return Response({"detail": "Invalid credentials"}, status=status.HTTP_401_UNAUTHORIZED)
         
         tokens = serializer.validated_data

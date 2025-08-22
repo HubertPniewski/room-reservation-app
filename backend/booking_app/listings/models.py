@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import time
 
 class RentObject(models.Model):
     class RentalType(models.TextChoices):
@@ -12,12 +13,21 @@ class RentObject(models.Model):
         choices=RentalType.choices,
         default=RentalType.ROOM
     )
+    rooms = models.IntegerField(default=1)
+    area = models.FloatField(default=0)
     owner = models.ForeignKey('users.User', on_delete=models.PROTECT, related_name='rental_objects')
     address = models.CharField(max_length=200)
     town = models.CharField(max_length=58)
     day_price_cents = models.IntegerField()
+    pets_allowed = models.BooleanField(default=False)
+    own_kitchen = models.BooleanField(default=False)
+    own_bathroom = models.BooleanField(default=False)
+    parking_place = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     reservation_edit_deadline = models.IntegerField(default=7)
+    reservation_break_minutes = models.IntegerField(default=300)
+    check_in_out_start_hour = models.TimeField(default=time(8, 0))
+    check_in_out_end_hour = models.TimeField(default=time(20, 0))
 
 
     class Meta:

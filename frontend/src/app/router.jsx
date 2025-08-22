@@ -6,6 +6,7 @@ import NotFound from "../pages/NotFound";
 import MyAccount from "../pages/MyAccount";
 import RegisterPage from "../pages/RegisterPage";
 import RentObjectDetails from "../pages/RentObjectDetails";
+import ProfilePublic from "../pages/ProfilePublic";
 
 const router = createBrowserRouter([
   {
@@ -14,10 +15,11 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
-      { path: 'login', element: <LoginPage /> },
-      { path: 'profile', element: <MyAccount /> },
-      { path: 'register', element: <RegisterPage /> },
+      { path: "login", element: <LoginPage /> },
+      { path: "profile", element: <MyAccount /> },
+      { path: "register", element: <RegisterPage /> },
       { path: "listings/:id", element: <RentObjectDetails />},
+      { path: "users/:id", element: <ProfilePublic />},
     ],
   },
 ]);

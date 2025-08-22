@@ -87,14 +87,13 @@ class UserTests(APITestCase):
             password="hssd2178sa",
             terms_accepted=True
         )
-        url = '/auth/token/'
+        url = '/users/auth/login/'
         data = {
             "email": "user@example.com",
             "password": "hssd2178sa"
         }
         response = self.client.post(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertIn("access", response.data)
 
     # 7. login, missing password
     def test_user_login_missing_password(self):
@@ -106,7 +105,7 @@ class UserTests(APITestCase):
             password="hssd2178sa",
             terms_accepted=True
         )
-        url = '/auth/token/'
+        url = '/users/auth/login/'
         data = {
             "email": "user@example.com"
         }
@@ -124,7 +123,7 @@ class UserTests(APITestCase):
             password="hssd2178sa",
             terms_accepted=True
         )
-        url = '/auth/token/'
+        url = '/users/auth/login/'
         data = {
             "email": "user@example.com",
             "password": "hssd2178sa11"
@@ -142,7 +141,7 @@ class UserTests(APITestCase):
             password="hssd2178sa",
             terms_accepted=True
         )
-        url = '/auth/token/'
+        url = '/users/auth/login/'
         data = {
             "email": "user@exampl.com",
             "password": "hssd2178sa"

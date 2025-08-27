@@ -5,7 +5,7 @@ function MyObjectItem({ object }) {
   return (
     <li className={classes.objectsList}>
       <p><span className={classes.green}>{object.name}</span> ({object.rental_type}) | <span className={classes.green}>{object.day_price_cents/100} PLN/day</span> | {object.address}, {object.town}</p>
-      <Link>
+      <Link to={`../listings/${object.id}/edit/`}>
         <button className={classes.editButton}>Edit</button>
       </Link>
       <Link>

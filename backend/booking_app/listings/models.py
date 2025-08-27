@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import time
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 class RentObject(models.Model):
     class RentalType(models.TextChoices):
@@ -43,7 +44,10 @@ class RentObject(models.Model):
 class RentObjectImage(models.Model):
     rent_object = models.ForeignKey(RentObject, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to='rent_objects/')
-    uploaded_at = models.DateField(auto_now_add=True)
+    index = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(7)])
+
+    class Meta:
+        ordering = ['index']
 
     def __str__(self):
         return f"Image for {self.rent_object.name}"

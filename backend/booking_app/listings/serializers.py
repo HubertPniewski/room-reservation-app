@@ -7,7 +7,7 @@ class RentObjectImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RentObjectImage
-        fields = ['id', 'image_url']
+        fields = ['id', 'image_url', 'index']
 
     def get_image_url(self, obj):
         request = self.context.get('request')
@@ -18,6 +18,9 @@ class RentObjectImageSerializer(serializers.ModelSerializer):
 
 class RentObjectSerializer(serializers.ModelSerializer):
     images = RentObjectImageSerializer(many=True, read_only=True)
+    new_images = serializers.ListField(
+        child=serializers.ImageField(), write_only=True, required=False
+    )
 
     class Meta:
         model = RentObject
@@ -41,5 +44,33 @@ class RentObjectSerializer(serializers.ModelSerializer):
             'check_in_out_start_hour',
             'check_in_out_end_hour',
             'images',
+            'new_images',
         )
         read_only_fields = ['owner']
+
+    def validate_images(self, images):
+        if len(images) > 8:
+            raise serializers.ValidationError("You can upload not more than 8 images")
+        return images
+
+    def update(self, instance, validated_data):
+        #extract uploaded images
+        new_images = validated_data.pop('new_images', [])
+
+        # update other fields
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # append new images
+        for img in new_images:
+            RentObjectImage.objects.create(rent_object=instance, image=img)
+
+        return instance
+    
+    def create(self, validated_data):
+        new_images = validated_data.pop('new_images', [])
+        instance = super().create(validated_data)
+        for img in new_images:
+            RentObjectImage.objects.create(rent_object=instance, image=img)
+        return instance

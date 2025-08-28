@@ -4,11 +4,14 @@ import PhotoGallery from "../components/PhotoGallery";
 import classes from "./RentObjectDetails.module.css";
 import defaultAvatar from "../assets/default_avatar.png";
 import DOMPurify from 'dompurify';
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 function RentObjectDetails() {
   const { id } = useParams();
   const [object, setObject] = useState(null);
   const [objectOwner, setObjectOwner] = useState(null);
+  const { user } = useContext(AuthContext);
 
   function formatText(text) {
   if (!text) return '';
@@ -60,6 +63,13 @@ function RentObjectDetails() {
           __html: DOMPurify.sanitize(formatText(object?.description)),
         }}
       ></p>
+
+      {user && user.id === object.owner && (
+        <Link to={`edit/`}>
+          <button>Edit the rent object</button>
+        </Link>
+      )}
+      
       <Link to={objectOwner?.id ? "/users/" + objectOwner.id : ""} className={classes.ownerLink}>
         <h3 className={classes.owner}>Owner</h3>
         {objectOwner ? 

@@ -51,7 +51,7 @@ function MyAccount() {
       <div className={classes.rentalsBar}>
         <div className={classes.rentalsBarInside}>
           <h3>Your rental objects:</h3>
-          <Link>
+          <Link to="/listings/create/">
             <button className={classes.addButton}>
               Add +
             </button>

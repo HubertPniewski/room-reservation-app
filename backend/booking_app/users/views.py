@@ -107,7 +107,7 @@ class LoginView(APIView):
             secure=True,
             samesite="None",
             max_age=1296000, # 15 days
-            path="/auth/token/refresh/",
+            path="/",
         )
         
         # ensure csrf cookie is set (non-httponly)
@@ -147,6 +147,20 @@ class CookieTokenRefreshView(APIView):
 class LogoutView(APIView):
     def post(self, request):
         resp = Response({"detail": "Logged out"}, status=status.HTTP_200_OK)
-        resp.delete_cookie("access", path="/")
-        resp.delete_cookie("refresh", path="/auth/token/refresh/")
+
+        resp.delete_cookie(
+            "access",
+            # httponly=True,
+            path="/",
+            # secure=True,
+            # samesite="None",
+        )
+        resp.delete_cookie(
+            "refresh",
+            # httponly=True,
+            path="/",
+            # secure=True,
+            # samesite="None",
+        )
+
         return resp

@@ -24,7 +24,7 @@ function PhotoGallery({ photos }) {
     <div className={classes.galleryContainer}>
       <div className={classes.imgContainer}>
         <button className={classes.bigArrowButton} onClick={prevImg}>⟨</button>
-        <img className={classes.bigImage} src={photos[curImg].image_url} alt={photos[curImg].image_url} />
+        <img className={classes.bigImage} src={photos && photos[curImg]?.image_url} alt={photos && photos[curImg]?.image_url} />
         <button className={classes.bigArrowButton} onClick={nextImg}>⟩</button>
       </div>
       <div className={classes.photosContainer}>

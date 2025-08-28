@@ -8,6 +8,7 @@ import RegisterPage from "../pages/RegisterPage";
 import RentObjectDetails from "../pages/RentObjectDetails";
 import ProfilePublic from "../pages/ProfilePublic";
 import RentObjectEdit from "../pages/RentObjectEdit";
+import AddRentObject from "../pages/AddRentObject";
 
 const router = createBrowserRouter([
   {
@@ -16,12 +17,13 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, element: <Home /> },
-      { path: "login", element: <LoginPage /> },
-      { path: "profile", element: <MyAccount /> },
-      { path: "register", element: <RegisterPage /> },
-      { path: "listings/:id", element: <RentObjectDetails /> },
-      { path: "users/:id", element: <ProfilePublic /> },
+      { path: "login/", element: <LoginPage /> },
+      { path: "profile/", element: <MyAccount /> },
+      { path: "register/", element: <RegisterPage /> },
+      { path: "listings/:id/", element: <RentObjectDetails /> },
+      { path: "users/:id/", element: <ProfilePublic /> },
       { path: "listings/:id/edit/", element: <RentObjectEdit /> },
+      { path: "listings/create/", element: <AddRentObject /> },
     ],
   },
 ]);

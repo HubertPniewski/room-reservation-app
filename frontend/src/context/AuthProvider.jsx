@@ -21,6 +21,17 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
+  // refresh token every 9 minutes (the access token lifetime is 10 minutes)
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(() => {
+      refreshToken().catch(err => console.error("Token refresh failed", err));
+      console.log('refresh');
+    }, 540000); // 9 min * 60 s * 1000 ms = 540000 ms
+
+    return () => clearInterval(interval);
+  });
+
   async function login(email, password) {
     const res = await fetch("https://127.0.0.1:8000/users/auth/login/", {
       method: "POST",
@@ -94,6 +105,18 @@ export function AuthProvider({ children }) {
 
     alert("Registration succeeded!");
     return res.json();
+  }
+
+  async function refreshToken() {
+    const res = await fetch("https://127.0.0.1:8000/users/auth/token/refresh/", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    if (!res.ok) throw new Error("Failed to refresh token");
+
+    const data = await res.json();
+    return data.access;
   }
 
   return (

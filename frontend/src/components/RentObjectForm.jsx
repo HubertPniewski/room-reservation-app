@@ -1,25 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import classes from "./RentObjectForm.module.css";
+import { useNavigate } from "react-router-dom";
 
 function RentObjectForm({ object }) {
-  const [name, setName] = useState("");
-  const [rentalType, setRentalType] = useState("room");
-  const [rooms, setRooms] = useState(1);
-  const [area, setArea] = useState(0);
-  const [address, setAddress] = useState("");
-  const [town, setTown] = useState("");
-  const [price, setPrice] = useState(0);
-  const [petsAllowed, setPetsAllowed] = useState(false);
-  const [ownKitchen, setOwnKitchen] = useState(false);
-  const [ownBathroom, setOwnBathroom] = useState(false);
-  const [parkingPlace, setParkingPlace] = useState(false);
-  const [images, setImages] = useState([]);
-  const [reservationEditDeadline, setReservationEditDeadline] = useState(7);
-  const [reservationBreak, setReservationBreak] = useState(600);
-  const [checkInOutStart, setCheckInOutStart] = useState("");
-  const [checkInOutEnd, setCheckInOutEnd] = useState("");
+  const navigate = useNavigate();
+  const [name, setName] = useState(object?.name || "");
+  const [rentalType, setRentalType] = useState(object?.rental_type || "room");
+  const [rooms, setRooms] = useState(object?.rooms || 1);
+  const [area, setArea] = useState(object?.area || 0);
+  const [address, setAddress] = useState(object?.address || "");
+  const [town, setTown] = useState(object?.town || "");
+  const [price, setPrice] = useState(object?.day_price_cents || 0);
+  const [petsAllowed, setPetsAllowed] = useState(object?.pets_allowed || false);
+  const [ownKitchen, setOwnKitchen] = useState(object?.own_kitchen || false);
+  const [ownBathroom, setOwnBathroom] = useState(object?.own_bathroom || false);
+  const [parkingPlace, setParkingPlace] = useState(object?.parking_place || false);
+  const [images, setImages] = useState(object?.images?.map(img => ({ ...img, isNew: false })) || []);
+  const [reservationEditDeadline, setReservationEditDeadline] = useState(object?.reservation_edit_deadline || 7);
+  const [reservationBreak, setReservationBreak] = useState(object?.reservation_break_minutes || 600);
+  const [checkInOutStart, setCheckInOutStart] = useState(object?.check_in_out_start_hour || "");
+  const [checkInOutEnd, setCheckInOutEnd] = useState(object?.check_in_out_end_hour || "");
+  const [description, setDescription] = useState(object?.description || "");
+  
   
   useEffect(() => {
+    if (!object) return;
     if (object?.name) setName(object.name);
     if (object?.rental_type) setRentalType(object.rental_type);
     if (object?.rooms) setRooms(object.rooms);
@@ -36,6 +41,7 @@ function RentObjectForm({ object }) {
     if (object?.reservation_break_minutes) setReservationBreak(object.reservation_break_minutes);
     if (object?.check_in_out_start_hour) setCheckInOutStart(object.check_in_out_start_hour);
     if (object?.check_in_out_end_hour) setCheckInOutEnd(object.check_in_out_end_hour);
+    if (object?.description) setDescription(object.description);
   }, [object])
 
   async function handleAddImages(e) {
@@ -70,6 +76,7 @@ function RentObjectForm({ object }) {
     if (object?.images) {
       setImages(images.map(img => ({ ...img, isNew: false })));
     }
+    navigate(`/listings/${object.id}`)
   }
 
   async function handleSubmit(e) {
@@ -91,27 +98,32 @@ function RentObjectForm({ object }) {
     formData.append("reservation_break_minutes", reservationBreak);
     formData.append("check_in_out_start_hour", checkInOutStart);
     formData.append("check_in_out_end_hour", checkInOutEnd);
+    formData.append("description", description);
 
     images.forEach(img => {
       if (img.isNew) {
-        images.append("new_images", img.file);
+        formData.append("new_images", img.file);
         formData.append("new_images_indexes[]", img.index);
-      } else {
+      } else if (object) {
         formData.append("images_data[]", JSON.stringify({ id: img.id, index: img.index }));
       }
     });
 
-    const res = await fetch(`https://127.0.0.1:8000/listings/${object.id}/`, {
-      method: "PATCH",
+    const url = object ?
+      `https://127.0.0.1:8000/listings/${object.id}/` : // edit existing one
+      "https://127.0.0.1:8000/listings/";               // add new one
+    const method = object ? "PATCH" : "POST";
+
+    const res = await fetch(url, {
+      method: method,
       body: formData,
       credentials: "include"
     });
 
     const data = await res.json();
-    console.log(data);
+    navigate(`/listings/${data.id}`);
   }
 
-  if (!object) return <p>Loading...</p>;
 
   return (
     <div className={classes.formContainer}>
@@ -141,16 +153,19 @@ function RentObjectForm({ object }) {
         <label htmlFor="day_price_cents">Price per day (PLN)</label>
         <input type="number" step="0.01" name="day_price_cents" id="day_price_cents" value={price/100} onChange={e => setPrice(e.target.value * 100)} min="0" required />
 
+        <label htmlFor="description">Description</label>
+        <textarea cols="67" rows="20" name="description" id="description" value={description} onChange={e => setDescription(e.target.value)} />
+
         <label htmlFor="pets_allowed">Pets allowed</label>
         <input type="checkbox" name="pets_allowed" id="pets_allowed" checked={petsAllowed} onChange={e => setPetsAllowed(e.target.checked)} />
 
         <label htmlFor="own_kitchen">Own kitchen</label>
         <input type="checkbox" name="own_kitchen" id="own_kitchen" checked={ownKitchen} onChange={e => setOwnKitchen(e.target.checked)} />
 
-        <label htmlFor="own_bathroom">Pets allowed</label>
+        <label htmlFor="own_bathroom">Own bathroom</label>
         <input type="checkbox" name="own_bathroom" id="own_bathroom" checked={ownBathroom} onChange={e => setOwnBathroom(e.target.checked)} />
 
-        <label htmlFor="parking_place">Pets allowed</label>
+        <label htmlFor="parking_place">Parking place</label>
         <input type="checkbox" name="parking_place" id="parking_place" checked={parkingPlace} onChange={e => setParkingPlace(e.target.checked)} />
 
         <label htmlFor="reservation_edit_deadline">Reservation edit deadline [days]</label>
@@ -194,10 +209,6 @@ function RentObjectForm({ object }) {
           <button type="submit">Save</button>
           <button type="button" onClick={handleCancel}>Cancel</button>
         </div>
-
-        {/* <button
-          style={{ marginBottom: "150px" }}
-        >Save</button> */}
       </form>
     </div>
   );

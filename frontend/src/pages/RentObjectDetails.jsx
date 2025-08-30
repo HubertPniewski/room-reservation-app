@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import PhotoGallery from "../components/PhotoGallery";
 import classes from "./RentObjectDetails.module.css";
 import defaultAvatar from "../assets/default_avatar.png";
@@ -12,6 +12,7 @@ function RentObjectDetails() {
   const [object, setObject] = useState(null);
   const [objectOwner, setObjectOwner] = useState(null);
   const { user } = useContext(AuthContext);
+  const location = useLocation();
 
   function formatText(text) {
   if (!text) return '';
@@ -51,7 +52,10 @@ function RentObjectDetails() {
       <h2 className={classes.details}><span className={classes.detailColor}>Rooms:</span> {object.rooms}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Area:</span> {object.area} m²</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Price:</span> {object.day_price_cents/100} zł / day</h2>
-      <h2 className={classes.details}><span className={classes.detailColor}>Check in/out hours:</span> {object.check_in_out_start_hour.substring(0,5)} - {object.check_in_out_end_hour.substring(0,5)}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Check in hours:</span> {object.check_in_start_hour.substring(0,5)} - {object.check_in_end_hour.substring(0,5)}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Check out hours:</span> {object.check_out_start_hour.substring(0,5)} - {object.check_out_end_hour.substring(0,5)}</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Advance booking required:</span> {object.advance_days} days before check in</h2>
+      <h2 className={classes.details}><span className={classes.detailColor}>Reservation edit/cancel deadline:</span> {object.reservation_edit_deadline} days before check in</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Own kitchen:</span> {object.own_kitchen ? "✔" : "✘"}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Own bathroom:</span> {object.own_bathroom ? "✔" : "✘"}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Parking place:</span> {object.parking_place ? "✔" : "✘"}</h2>
@@ -63,7 +67,15 @@ function RentObjectDetails() {
           __html: DOMPurify.sanitize(formatText(object?.description)),
         }}
       ></p>
-
+      {user ? 
+        <Link to="reservation/">
+          <button>Make a reservation</button>
+        </Link> :
+        <Link to="/login/" state={{ from: location }}>
+          <button>Login to make a reservation</button>
+        </Link>
+      }
+      
       {user && user.id === object.owner && (
         <Link to={`edit/`}>
           <button>Edit the rent object</button>

@@ -18,8 +18,10 @@ function RentObjectForm({ object }) {
   const [images, setImages] = useState(object?.images?.map(img => ({ ...img, isNew: false })) || []);
   const [reservationEditDeadline, setReservationEditDeadline] = useState(object?.reservation_edit_deadline || 7);
   const [reservationBreak, setReservationBreak] = useState(object?.reservation_break_minutes || 600);
-  const [checkInOutStart, setCheckInOutStart] = useState(object?.check_in_out_start_hour || "");
-  const [checkInOutEnd, setCheckInOutEnd] = useState(object?.check_in_out_end_hour || "");
+  const [checkInStart, setCheckInStart] = useState(object?.check_in_start_hour || "");
+  const [checkInEnd, setCheckInEnd] = useState(object?.check_in_end_hour || "");
+  const [checkOutStart, setCheckOutStart] = useState(object?.check_out_start_hour || "");
+  const [checkOutEnd, setCheckOutEnd] = useState(object?.check_out_end_hour || "");
   const [description, setDescription] = useState(object?.description || "");
   
   
@@ -39,8 +41,10 @@ function RentObjectForm({ object }) {
     if (object?.images) setImages(object.images.map(img => ({ ...img, isNew: false })));
     if (object?.reservation_edit_deadline) setReservationEditDeadline(object.reservation_edit_deadline);
     if (object?.reservation_break_minutes) setReservationBreak(object.reservation_break_minutes);
-    if (object?.check_in_out_start_hour) setCheckInOutStart(object.check_in_out_start_hour);
-    if (object?.check_in_out_end_hour) setCheckInOutEnd(object.check_in_out_end_hour);
+    if (object?.check_in_out_start_hour) setCheckInStart(object.check_in_start_hour);
+    if (object?.check_in_out_end_hour) setCheckInEnd(object.check_in_end_hour);
+    if (object?.check_in_out_start_hour) setCheckOutStart(object.check_out_start_hour);
+    if (object?.check_in_out_end_hour) setCheckOutEnd(object.check_out_end_hour);
     if (object?.description) setDescription(object.description);
   }, [object])
 
@@ -96,8 +100,10 @@ function RentObjectForm({ object }) {
     formData.append("parking_place", parkingPlace);
     formData.append("reservation_edit_deadline", reservationEditDeadline);
     formData.append("reservation_break_minutes", reservationBreak);
-    formData.append("check_in_out_start_hour", checkInOutStart);
-    formData.append("check_in_out_end_hour", checkInOutEnd);
+    formData.append("check_in_start_hour", checkInStart);
+    formData.append("check_in_end_hour", checkInEnd);
+    formData.append("check_out_start_hour", checkOutStart);
+    formData.append("check_out_end_hour", checkOutEnd);
     formData.append("description", description);
 
     images.forEach(img => {
@@ -174,13 +180,19 @@ function RentObjectForm({ object }) {
         <label htmlFor="reservation_break_minutes">Min. interval beetwen reservations [min] ({Math.floor(reservationBreak / 60)} h {reservationBreak % 60} min)</label>
         <input type="number" name="reservation_break_minutes" id="reservation_break_minutes" value={reservationBreak} onChange={e => setReservationBreak(e.target.value)} />
 
-        <label>Check in/out:</label>
+        <label>Check in hours:</label>
+        <div className={classes.hoursContainer}>
+          <input type="time" name="check_in_start_hour" id="check_in_start_hour" value={checkInStart} onChange={e => setCheckInStart(e.target.value)} />
+          <h2> - </h2>
+          <input type="time" name="check_in_end_hour" id="check_in_end_hour" value={checkInEnd} onChange={e => setCheckInEnd(e.target.value)} />
+        </div>
 
-        <label htmlFor="check_in_out_start_hour">from:</label>
-        <input type="time" name="check_in_out_start_hour" id="check_in_out_start_hour" value={checkInOutStart} onChange={e => setCheckInOutStart(e.target.value)} />
-        
-        <label htmlFor="check_in_out_end_hour">to:</label>
-        <input type="time" name="check_in_out_end_hour" id="check_in_out_end_hour" value={checkInOutEnd} onChange={e => setCheckInOutEnd(e.target.value)} />
+        <label>Check out hours:</label>
+        <div className={classes.hoursContainer}>
+          <input type="time" name="check_out_start_hour" id="check_out_start_hour" value={checkOutStart} onChange={e => setCheckOutStart(e.target.value)} />
+          <h2> - </h2>
+          <input type="time" name="check_out_end_hour" id="check_out_end_hour" value={checkOutEnd} onChange={e => setCheckOutEnd(e.target.value)} />
+        </div>
 
         <h3>Images (the first one will be the thumbnail)</h3>
         <div className={classes.photosContainer}>

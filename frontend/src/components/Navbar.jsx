@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import classes from "./Navbar.module.css";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 function Navbar() {
+  const location = useLocation();
   const { user, loading, logout } = useContext(AuthContext);
 
   if (loading) return <div>Loading...</div>
@@ -20,7 +21,11 @@ function Navbar() {
           </>
         ) : (
           <>
-            <Link className={classes.button} to="/login">Login</Link>
+            <Link 
+              className={classes.button} 
+              to="/login"
+              state={{ from: location }}
+            >Login</Link>
             <Link className={classes.button} to="/register">Register</Link>
           </>
         )}

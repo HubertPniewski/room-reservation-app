@@ -40,11 +40,14 @@ class RentObjectSerializer(serializers.ModelSerializer):
             'parking_place',
             'description',
             'reservation_edit_deadline',
-            'reservation_break_minutes',
-            'check_in_out_start_hour',
-            'check_in_out_end_hour',
+            'reservation_break_days',
+            'check_in_start_hour',
+            'check_in_end_hour',
+            'check_out_start_hour',
+            'check_out_end_hour',
             'images',
             'new_images',
+            'advance_days',
         )
         read_only_fields = ['owner']
 

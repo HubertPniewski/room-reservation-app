@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import classes from './LoginForm.module.css';
 
-function LoginForm() {
+function LoginForm({ prevUrl }) {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
@@ -16,7 +16,7 @@ function LoginForm() {
     e.preventDefault();
     try {
       await login(email, password);
-      navigate("/");
+      navigate(prevUrl);
     } catch (err) {
       console.log(err.message);
       if (err.message == "Invalid credentials") {

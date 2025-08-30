@@ -1,0 +1,89 @@
+/* .calendarContainer {
+  height: 750px;
+  padding: 10px;
+  min-width: 700px;
+} */
+
+.calendarContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+:global(.rbc-toolbar) {
+  white-space: normal !important;
+}
+
+:global(.rbc-toolbar button) {
+  padding: 6px 12px;
+  margin: 0 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.highlighted {
+  background-color: blue;
+}
+
+:global(.rbc-day-bg:hover) {
+  background-color: rgba(240, 248, 255, 0.212);
+}
+
+:global(.rbc-off-range-bg) {
+  background-color: rgba(99, 0, 0, 0.404);
+}
+
+:global(.rbc-today) {
+  background-color: rgba(28, 103, 241, 0.603);
+}
+
+:global(.rbc-calendar) {
+  height: 80vh;
+  margin-bottom: 20px;
+}
+
+:global(.rbc-button-link) {
+  cursor: default;
+  width: 100%;
+  pointer-events: none;
+}
+
+:global(.rbc-button-link:hover) {
+  cursor: default;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.summaryButtons {
+  width: auto;
+  padding: 5px 10px 5px 10px;
+  background-color: rgba(28, 119, 255, 0.233);
+  border-bottom: solid 1px white;
+}
+
+.detailsSpan {
+  color: rgb(0, 199, 139);
+}
+
+.termsForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 20px auto;
+}
+
+.termsCheckbox {
+  width: 30px;
+  height: 30px;
+}
+
+.termsText {
+  width: auto;
+  display: inline-block;
+  color: rgb(0, 199, 139);
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+.centeredButton {
+  margin: 10px auto;
+}

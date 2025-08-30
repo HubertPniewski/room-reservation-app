@@ -26,9 +26,12 @@ class RentObject(models.Model):
     parking_place = models.BooleanField(default=False)
     description = models.TextField(blank=True)
     reservation_edit_deadline = models.IntegerField(default=7)
-    reservation_break_minutes = models.IntegerField(default=300)
-    check_in_out_start_hour = models.TimeField(default=time(8, 0))
-    check_in_out_end_hour = models.TimeField(default=time(20, 0))
+    reservation_break_days = models.IntegerField(default=0)
+    check_in_start_hour = models.TimeField(default=time(8, 0))
+    check_in_end_hour = models.TimeField(default=time(20, 0))
+    check_out_start_hour = models.TimeField(default=time(8, 0))
+    check_out_end_hour = models.TimeField(default=time(20, 0))
+    advance_days = models.IntegerField(default=7)
 
 
     class Meta:

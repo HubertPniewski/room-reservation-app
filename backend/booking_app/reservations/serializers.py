@@ -7,7 +7,7 @@ from django.utils import timezone
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ['id', 'object', 'user', 'start_date_time', 'end_date_time']
+        fields = ['id', 'object', 'user', 'start_date', 'end_date']
         read_only_fields = ['user',]
 
     def validate(self, data):
@@ -21,6 +21,11 @@ class ReservationSerializer(serializers.ModelSerializer):
                     f"The reservation cannot be modified later than {limit} days before the reservation start date."
                 )
         return data
+    
+class ReservationTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reservation
+        fields = ['start_date', 'end_date']
     
 
 class IdOnlyReservationSerializer(serializers.ModelSerializer):

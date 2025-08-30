@@ -9,6 +9,7 @@ import RentObjectDetails from "../pages/RentObjectDetails";
 import ProfilePublic from "../pages/ProfilePublic";
 import RentObjectEdit from "../pages/RentObjectEdit";
 import AddRentObject from "../pages/AddRentObject";
+import Reservation from "../pages/Reservation";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,7 @@ const router = createBrowserRouter([
       { path: "users/:id/", element: <ProfilePublic /> },
       { path: "listings/:id/edit/", element: <RentObjectEdit /> },
       { path: "listings/create/", element: <AddRentObject /> },
+      { path: "listings/:id/reservation/", element: <Reservation />}
     ],
   },
 ]);

@@ -1,10 +1,11 @@
 import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import "./RootLayout.module.css";
+import classes from "./RootLayout.module.css";
+
 
 function RootLayout() {
   return (
-    <div>
+    <div className={classes.pageWrapper}>
       <Navbar />
       <main>
         <Outlet />

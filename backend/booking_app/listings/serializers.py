@@ -48,6 +48,7 @@ class RentObjectSerializer(serializers.ModelSerializer):
             'images',
             'new_images',
             'advance_days',
+            'max_advance_days',
         )
         read_only_fields = ['owner']
 

@@ -32,6 +32,7 @@ class RentObject(models.Model):
     check_out_start_hour = models.TimeField(default=time(8, 0))
     check_out_end_hour = models.TimeField(default=time(20, 0))
     advance_days = models.IntegerField(default=7)
+    max_advance_days = models.IntegerField(default=365)
 
 
     class Meta:

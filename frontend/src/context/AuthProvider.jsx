@@ -26,11 +26,10 @@ export function AuthProvider({ children }) {
     if (!user) return;
     const interval = setInterval(() => {
       refreshToken().catch(err => console.error("Token refresh failed", err));
-      console.log('refresh');
     }, 540000); // 9 min * 60 s * 1000 ms = 540000 ms
 
     return () => clearInterval(interval);
-  });
+  }, [user]);
 
   async function login(email, password) {
     const res = await fetch("https://127.0.0.1:8000/users/auth/login/", {

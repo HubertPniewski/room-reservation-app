@@ -1,0 +1,40 @@
+.reservationsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+  row-gap: 10px;
+}
+
+.reservation {
+  border: 1px solid white;
+  width: 90%;
+  height: 100px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.resImage {
+  height: 80px;
+  width: 140px;
+}
+
+.resDetails {
+  margin-right: auto;
+  margin-left: 20px;
+}
+
+.link {
+  display: inline;
+  min-width: 200px;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+button {
+  transition: 0.05s;
+}

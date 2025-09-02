@@ -1,0 +1,44 @@
+.pdfButton {
+  margin: 40px auto;
+}
+
+.detailsDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paragraph {
+  margin-left: auto;
+  width: 50%;
+}
+
+.cancelBtn {
+  margin: 5px auto;
+  background-color: red;
+  transition: 0.1s;
+}
+
+.cancelBtnInactive {
+  margin: 5px auto;
+  background-color: rgb(100, 100, 100);
+  transition: 0.1s;
+  cursor: not-allowed;
+}
+
+.cancelBtnInactive:hover {
+  background-color: rgb(100, 100, 100);
+}
+
+.cancelBtn:hover {
+  background-color: rgb(180, 0, 0);
+}
+
+.header {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.cancelText {
+  text-align: center;
+}

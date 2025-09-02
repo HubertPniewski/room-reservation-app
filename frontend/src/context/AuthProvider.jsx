@@ -25,8 +25,9 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (!user) return;
     const interval = setInterval(() => {
+      console.log("refresh");
       refreshToken().catch(err => console.error("Token refresh failed", err));
-    }, 540000); // 9 min * 60 s * 1000 ms = 540000 ms
+    }, 480000); // 8 min * 60 s * 1000 ms = 480000 ms
 
     return () => clearInterval(interval);
   }, [user]);

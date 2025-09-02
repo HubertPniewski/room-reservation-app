@@ -4,7 +4,7 @@ import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "moment/locale/pl";
 import classes from "./Reservation.module.css";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 moment.updateLocale("pl-PL", {
@@ -28,6 +28,7 @@ function Reservation() {
   const [objectOwner, setObjectOwner] = useState(null);
   const [termsAccepted, setTermsAccpeted] = useState(false);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSlotClick = ({ start }) => {
     if (mode === "start") {
@@ -170,12 +171,15 @@ function Reservation() {
     };
     if (termsAccepted) {
       try {
-        await fetch("https://127.0.0.1:8000/reservations/", {
+        const res = await fetch("https://127.0.0.1:8000/reservations/", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json"},
           body: JSON.stringify(reservation)
         });
+        if (res.ok) {
+          navigate(`/profile/`);
+        }
       } catch (err) {
         console.error(err);
       }

@@ -13,3 +13,13 @@ li {
   list-style: none;
   min-width: 50%;
 }
+
+.profileImg {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 200px;
+  border: solid white 2px;
+  margin: 10px auto;
+  display: block;
+}

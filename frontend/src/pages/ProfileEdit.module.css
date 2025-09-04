@@ -1,0 +1,38 @@
+.profileEditContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.editSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 0;
+  margin-top: 40px;
+}
+
+form {
+  width: 100%;
+}
+
+.profileImg {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 200px;
+  border: solid white 2px;
+  margin: 10px auto;
+  display: block;
+}
+
+.separatingDiv {
+  height: 1px;
+  border-bottom: 1px solid white;
+  width: 100%;
+  margin-top: 40px;
+  margin-bottom: 50px;
+}

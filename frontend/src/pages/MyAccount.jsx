@@ -75,7 +75,7 @@ function MyAccount() {
     <>
       {user ? <UserProfile data={user} /> : <p>Loading...</p>}
       <div className={classes.editAccountDiv}>
-        <Link>
+        <Link to="edit/">
           <button className={classes.editAccountButton}>
             Edit account data
           </button>

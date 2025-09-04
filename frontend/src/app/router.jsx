@@ -11,6 +11,7 @@ import RentObjectEdit from "../pages/RentObjectEdit";
 import AddRentObject from "../pages/AddRentObject";
 import Reservation from "../pages/Reservation";
 import ReservationDetails from "../pages/ReservationDetails";
+import ProfileEdit from "../pages/ProfileEdit";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "listings/create/", element: <AddRentObject /> },
       { path: "listings/:id/reservation/", element: <Reservation /> },
       { path: "reservations/:id/", element: <ReservationDetails /> },
+      { path: "profile/edit/", element: <ProfileEdit /> },
     ],
   },
 ]);

@@ -23,14 +23,14 @@ export function AuthProvider({ children }) {
 
   // refresh token every 9 minutes (the access token lifetime is 10 minutes)
   useEffect(() => {
-    if (!user) return;
     const interval = setInterval(() => {
+      if (!user) return;
       console.log("refresh");
       refreshToken().catch(err => console.error("Token refresh failed", err));
     }, 480000); // 8 min * 60 s * 1000 ms = 480000 ms
 
     return () => clearInterval(interval);
-  }, [user]);
+  });
 
   async function login(email, password) {
     const res = await fetch("https://127.0.0.1:8000/users/auth/login/", {
@@ -104,6 +104,34 @@ export function AuthProvider({ children }) {
     }
 
     alert("Registration succeeded!");
+    return res.json();
+  }
+
+  async function editUser(userData) {
+    const res = await fetch(`https://127.0.0.1:8000/users/${userData.id}/`, {
+      method: "PATCH",
+      body: userData,
+      credentials: "include",
+    });
+
+    if (!res.ok) {   
+      let errMessage = "Edition failed";
+      try {
+        const errData = await res.json();
+
+        if (errData.detail) {
+          errMessage = errData.detail;
+          
+        } else {
+          errMessage = JSON.stringify(errData);
+          console.log(errMessage);
+        }
+      } catch (err) {
+        errMessage = err.message;
+      }
+      throw new Error(errMessage);
+    }
+
     return res.json();
   }
 

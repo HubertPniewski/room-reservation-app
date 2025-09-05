@@ -1,6 +1,6 @@
 from .models import User
 from rest_framework import generics, permissions, status
-from .serializers import UserPublicSerializer, UserFullSerializer, UserRegistrationSerializer
+from .serializers import UserPublicSerializer, UserFullSerializer, UserRegistrationSerializer, ChangePasswordSerializer
 from reservations.models import Reservation
 from django.shortcuts import redirect
 from rest_framework.views import APIView
@@ -164,3 +164,16 @@ class LogoutView(APIView):
         )
 
         return resp
+
+class ChangePasswordView(generics.UpdateAPIView):
+    permission_classes = [permissions.IsAuthenticated, IsSelf]
+    serializer_class = ChangePasswordSerializer
+
+    def get_object(self):
+        return self.request.user
+    
+    def update(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"detail": "Password changed successfully"}, status=status.HTTP_200_OK)

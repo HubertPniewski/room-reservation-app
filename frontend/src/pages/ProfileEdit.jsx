@@ -15,7 +15,7 @@ function ProfileEdit() {
   const [oldImage, setOldImage] = useState("");
   const [invalidPhoneNumber, setInvalidPhoneNumber] = useState(false);
   const [emailTaken, setEmailTaken] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { login, logout } = useContext(AuthContext);
   const prevEmail = useRef("");
   const userId = useRef("");
   const [invalidPassword, setInvalidPassword] = useState(false);
@@ -42,7 +42,6 @@ function ProfileEdit() {
         setOldImage(data.profile_image);
         prevEmail.current = data.email;
         userId.current = data.id;
-        console.log(data);
       })
       .catch(err => console.error(err));
   }, []);
@@ -106,31 +105,22 @@ function ProfileEdit() {
     }
 
     try {
-      await login(prevEmail.current, password2);
-    } catch (err) {
-      setInvalidPassword(true);
-      console.error(err);
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("id", userId.current);
-    formData.append("password", newPassword);
-
-    try {
-      const res = await fetch(`https://127.0.0.1:8000/users/${userId.current}/`, {
+      const res = await fetch(`https://127.0.0.1:8000/users/auth/change-password/`, {
         method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: formData,
+        body: JSON.stringify({ old_password: password2, new_password: newPassword }),
       });
           
-      if (!res.ok) {
-        throw new Error(`Failed to change the password`);
-      }
-      
-      setInvalidPassword(false);
-      navigate("/profile/")
-      
+      if (res.ok) {
+        const data = await res.json();
+        alert(data.detail);
+        logout();
+        navigate("/login/");
+      } else {
+        const error = await res.json();
+        alert(error.old_password?.[0] || error.new_password?.[0] || "Failed to change password");
+      }     
     } catch (err) {
       console.error(err);
     }
@@ -197,7 +187,7 @@ function ProfileEdit() {
 
       <div className={classes.separatingDiv} /> 
 
-      {/* <h1>Change password</h1>
+      <h1>Change password</h1>
       <form onSubmit={handlePasswordChange}>
         <div className={classes.editSection}>
           <label htmlFor="newPassword">New password<span>*</span></label>
@@ -213,7 +203,7 @@ function ProfileEdit() {
           <label><span>*</span> - required fields</label>
           <button>Apply changes</button>
         </div>        
-      </form> */}
+      </form>
     </div>
   );
 }

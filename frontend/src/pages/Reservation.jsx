@@ -108,12 +108,13 @@ function Reservation() {
           end: new Date(today.getTime() - 24 * 3600 * 1000),
           allDay: true,
         },
+        objectData.advance_days != 0 && (
         {
           title: `Too late. Minimum advance: ${objectData.advance_days} days`,
           start: today,
-          end: new Date(today.getTime() + objectData.advance_days * 24 * 3600 * 1000),
+          end: new Date(today.getTime() + (objectData.advance_days - 1) * 24 * 3600 * 1000),
           allDay: true,
-        },
+        }),
         {
           title: `Too early. Maximum advance: ${objectData.max_advance_days} days`,
           start: new Date(today.getTime() + objectData.max_advance_days * 24 * 3600 * 1000),

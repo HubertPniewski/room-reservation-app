@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'drf_spectacular_sidecar',
     'corsheaders',
     "django_extensions",
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [

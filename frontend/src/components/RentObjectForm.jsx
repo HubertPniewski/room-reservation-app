@@ -17,6 +17,7 @@ function RentObjectForm({ object }) {
   const [parkingPlace, setParkingPlace] = useState(object?.parking_place || false);
   const [images, setImages] = useState(object?.images?.map(img => ({ ...img, isNew: false })) || []);
   const [reservationEditDeadline, setReservationEditDeadline] = useState(object?.reservation_edit_deadline || 7);
+  const [advanceDays, setAdvanceDays] = useState(object?.advance_days || 7);
   const [reservationBreak, setReservationBreak] = useState(object?.reservation_break_minutes || 600);
   const [checkInStart, setCheckInStart] = useState(object?.check_in_start_hour || "");
   const [checkInEnd, setCheckInEnd] = useState(object?.check_in_end_hour || "");
@@ -40,6 +41,7 @@ function RentObjectForm({ object }) {
     if (object?.parking_place) setParkingPlace(object.parking_place);
     if (object?.images) setImages(object.images.map(img => ({ ...img, isNew: false })));
     if (object?.reservation_edit_deadline) setReservationEditDeadline(object.reservation_edit_deadline);
+    if (object?.advanceDays) setAdvanceDays(object.advance_days);
     if (object?.reservation_break_minutes) setReservationBreak(object.reservation_break_minutes);
     if (object?.check_in_out_start_hour) setCheckInStart(object.check_in_start_hour);
     if (object?.check_in_out_end_hour) setCheckInEnd(object.check_in_end_hour);
@@ -50,13 +52,24 @@ function RentObjectForm({ object }) {
 
   async function handleAddImages(e) {
     const files = Array.from(e.target.files);
-    const newFiles = files.map(file => ({
+    const newFiles = files.map((file, i) => ({
       id: `temp-${file.name}-${Date.now()}`,
       isNew: true,
       file,
-      preview: URL.createObjectURL(file)
+      preview: URL.createObjectURL(file),
+      index: images.length + i
     }));
     setImages(prev => [...prev, ...newFiles]);
+  }
+
+  async function handleRemoveImage(id) {
+    const newImages = [];
+    images.map(img => {
+      if (img.id !== id) {
+        newImages.push(img);
+      }
+    });
+    setImages([...newImages]);
   }
 
   function moveImage(index, direction) {
@@ -99,6 +112,7 @@ function RentObjectForm({ object }) {
     formData.append("own_bathroom", ownBathroom);
     formData.append("parking_place", parkingPlace);
     formData.append("reservation_edit_deadline", reservationEditDeadline);
+    formData.append("advance_days", advanceDays);
     formData.append("reservation_break_minutes", reservationBreak);
     formData.append("check_in_start_hour", checkInStart);
     formData.append("check_in_end_hour", checkInEnd);
@@ -173,6 +187,9 @@ function RentObjectForm({ object }) {
 
         <label htmlFor="parking_place">Parking place</label>
         <input type="checkbox" name="parking_place" id="parking_place" checked={parkingPlace} onChange={e => setParkingPlace(e.target.checked)} />
+        
+        <label htmlFor="advance_days">Reservation minimum advance days</label>
+        <input type="number" name="advance_days" id="advance_days" value={advanceDays} onChange={e => setAdvanceDays(e.target.value)} />
 
         <label htmlFor="reservation_edit_deadline">Reservation edit deadline [days]</label>
         <input type="number" name="reservation_edit_deadline" id="reservation_edit_deadline" value={reservationEditDeadline} onChange={e => setReservationEditDeadline(e.target.value)} />
@@ -201,6 +218,7 @@ function RentObjectForm({ object }) {
               <div key={image.id} className={classes.singlePhoto}>
                 <div className={classes.positionArrows}>
                   <button type="button" className={classes.upDownButton} onClick={() => moveImage(index, 'u')}>↑</button>
+                  <button type="button" className={classes.deleteImgButton} onClick={() => handleRemoveImage(image.id)}>X</button>
                   <button type="button" className={classes.upDownButton} onClick={() => moveImage(index, 'd')}>↓</button>
                 </div>
                 <img className={classes.detailImage} src={image.isNew ? image.preview : image.image_url} />

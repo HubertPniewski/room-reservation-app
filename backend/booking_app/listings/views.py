@@ -45,9 +45,18 @@ class RentObjectDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         # update indexes for existing images
         images_data = request.data.getlist('images_data[]')
+        images_to_delete = list(RentObjectImage.objects.filter(rent_object=instance))
         for item in images_data:
             data = json.loads(item)
+            for img in images_to_delete:
+                if img.id == data['id']:
+                    images_to_delete.remove(img)
+                    break
             RentObjectImage.objects.filter(id=data['id'], rent_object=instance).update(index=data['index'])
+
+        for img in images_to_delete:
+            img.delete()
+        
 
         # handle new images
         new_images = request.FILES.getlist('new_images')

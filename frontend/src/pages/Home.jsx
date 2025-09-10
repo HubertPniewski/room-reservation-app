@@ -1,29 +1,98 @@
 import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ObejctsList from "../components/ObjectsList";
+import classes from "./Home.module.css";
+import { useOutletContext } from "react-router-dom";
+
 
 function Home() {
   const [objects, setObjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { filters, setFilters, limits, setLimits } = useOutletContext();
+
+  function filtersToQueryString(filters) {
+    return Object.entries(filters)
+      .filter(([_, v]) => v !== "" && v !== false) // eslint-disable-line no-unused-vars
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
+      .join("&");
+  }
 
   function handleSearch(filters) {
-    console.log("Search with filters:", filters)
-  };
+    const query = filtersToQueryString(filters);
 
-  useEffect(() => {
-    fetch('https://127.0.0.1:8000/listings/')
+    fetch(`https://127.0.0.1:8000/listings/?${query}`)
       .then((res) => res.json())
       .then((data) => {
         setObjects(data.results);
+        setLoading(false);
+      });
+  };
+
+  function handleSearchSubmit(data) {
+    setFilters(data);
+    handleSearch(data);
+  }
+
+  useEffect(() => {
+    const query = filtersToQueryString(filters);
+
+    fetch(`https://127.0.0.1:8000/listings/?${query}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setObjects(data.results);
+        if (limits.maxPrice === 5000) {
+        setLimits(prev => ({ ...prev, maxPrice: findHighestPrice(data.results) }));
+      }
+      if (limits.maxRooms === 10) {
+        setLimits(prev => ({ ...prev, maxRooms: findHighestRooms(data.results) }));
+      }
+      if (limits.maxArea === 100) {
+        setLimits(prev => ({ ...prev, maxArea: findHighestArea(data.results) }));
+      }
+      if (limits.maxEditDeadline === 14) {
+        setLimits(prev => ({ ...prev, maxEditDeadline: findHighestEditDeadline(data.results) }));
+      }
         setLoading(false);
       });
   }, []);
 
   if (loading) return <p>Loading...</p>
 
+  function findHighestPrice(objectArr) {
+    let highest = 0;
+    objectArr.forEach(element => {
+      if (element['day_price_cents'] > highest) highest = element['day_price_cents'];
+    });
+    return highest / 100;
+  }
+
+  function findHighestRooms(objectArr) {
+    let highest = 0;
+    objectArr.forEach(element => {
+      if (element['rooms'] > highest) highest = element['rooms'];
+    });
+    return highest;
+  }
+
+  function findHighestArea(objectArr) {
+    let highest = 0;
+    objectArr.forEach(element => {
+      if (element['area'] > highest) highest = element['area'];
+    });
+    return highest;
+  }
+
+    function findHighestEditDeadline(objectArr) {
+    let highest = 0;
+    objectArr.forEach(element => {
+      if (element['reservation_edit_deadline'] > highest) highest = element['reservation_edit_deadline'];
+    });
+    return highest;
+  }
+
   return (
-    <div>
-      <SearchBar onSearch={handleSearch} />
+    <div className={classes.homeLayout}>
+      <SearchBar onSearch={handleSearchSubmit} highestPrice={limits.maxPrice} highestRooms={limits.maxRooms} highestArea={limits.maxArea} highestDeadline={limits.maxEditDeadline} prevFilters={filters} />
       <ObejctsList items={objects} />
     </div>
   );

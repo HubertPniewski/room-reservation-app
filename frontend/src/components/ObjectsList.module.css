@@ -1,18 +1,14 @@
-/* .container {
-  display: inline-grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-  padding: 20px;
-} */
-
 .container {
   display: flex;
-  flex-wrap: wrap;        /* allow items to wrap to the next line */
-  gap: 20px;              /* fixed spacing between items */
+  flex-wrap: wrap;
+  gap: 20px;
   padding: 20px;
-  justify-content: center; /* center the row so left/right gaps are equal */
+  justify-content: center; 
+  align-items: flex-start;
+  flex: 1;
+  margin-bottom: auto;
 }
 
 .container > * {
-  flex: 0 0 350px;        /* fixed item width, no shrinking */
+  flex: 0 0 350px;
 }

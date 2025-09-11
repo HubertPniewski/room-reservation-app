@@ -26,11 +26,14 @@ export function AuthProvider({ children }) {
     const interval = setInterval(() => {
       if (!user) return;
       console.log("refresh");
-      refreshToken().catch(err => console.error("Token refresh failed", err));
+      refreshToken().catch(err => {
+        console.error("Token refresh failed", err);
+        setUser(null);
+      });
     }, 480000); // 8 min * 60 s * 1000 ms = 480000 ms
 
     return () => clearInterval(interval);
-  });
+  }, [user]);
 
   async function login(email, password) {
     const res = await fetch("https://127.0.0.1:8000/users/auth/login/", {
@@ -107,33 +110,33 @@ export function AuthProvider({ children }) {
     return res.json();
   }
 
-  async function editUser(userData) {
-    const res = await fetch(`https://127.0.0.1:8000/users/${userData.id}/`, {
-      method: "PATCH",
-      body: userData,
-      credentials: "include",
-    });
+  // async function editUser(userData) {
+  //   const res = await fetch(`https://127.0.0.1:8000/users/${userData.id}/`, {
+  //     method: "PATCH",
+  //     body: userData,
+  //     credentials: "include",
+  //   });
 
-    if (!res.ok) {   
-      let errMessage = "Edition failed";
-      try {
-        const errData = await res.json();
+  //   if (!res.ok) {   
+  //     let errMessage = "Edition failed";
+  //     try {
+  //       const errData = await res.json();
 
-        if (errData.detail) {
-          errMessage = errData.detail;
+  //       if (errData.detail) {
+  //         errMessage = errData.detail;
           
-        } else {
-          errMessage = JSON.stringify(errData);
-          console.log(errMessage);
-        }
-      } catch (err) {
-        errMessage = err.message;
-      }
-      throw new Error(errMessage);
-    }
+  //       } else {
+  //         errMessage = JSON.stringify(errData);
+  //         console.log(errMessage);
+  //       }
+  //     } catch (err) {
+  //       errMessage = err.message;
+  //     }
+  //     throw new Error(errMessage);
+  //   }
 
-    return res.json();
-  }
+  //   return res.json();
+  // }
 
   async function refreshToken() {
     const res = await fetch("https://127.0.0.1:8000/users/auth/token/refresh/", {
@@ -141,7 +144,11 @@ export function AuthProvider({ children }) {
       credentials: "include",
     });
 
-    if (!res.ok) throw new Error("Failed to refresh token");
+    if (!res.ok) {
+      console.error("Failed to refresh token, logging out");
+      setUser(null);
+      throw new Error("Failed to refresh token");
+    }
 
     const data = await res.json();
     return data.access;

@@ -4,12 +4,15 @@ import MyObjectsList from "../components/MyObjectsList";
 import UserProfile from "../components/UserProfile";
 import classes from "./MyAccount.module.css";
 import MyReservations from "../components/MyReservations";
+import MyObjectsReservations from "../components/MyObjectsReservations";
 
 function MyAccount() {
   const [user, setUser] = useState(null);
   const [objects, setObjects] = useState([]);
   const [myReservations, setMyReservations] = useState([]);
   const [myResObjects, setMyResObjects] = useState([]);
+  const [myObjectsReservations, setMyObjectsReservations] = useState([]);
+  const [myClients, setMyClients] = useState([]);
 
   useEffect(() => {
     fetch('https://127.0.0.1:8000/users/me/', {
@@ -41,7 +44,8 @@ function MyAccount() {
       .catch(err => console.error(err));
   }, []);
 
-  useState(() => {
+  // get data for my reservations
+  useEffect(() => {
     fetch('https://127.0.0.1:8000/reservations/my-reservations/', {
       method: "GET",
       credentials: "include",
@@ -57,6 +61,7 @@ function MyAccount() {
     if (!myReservations || myReservations.length === 0) return;
 
     Promise.all(
+      // to improve, use batch fetching instead of single request for each reservation
       myReservations.map(element =>
         fetch(`https://127.0.0.1:8000/listings/${element.object}/`, {
           method: "GET",
@@ -70,6 +75,38 @@ function MyAccount() {
       .catch(err => console.error(err));
   }, [myReservations]);
 
+  // get data for my objects reservations
+  useEffect(() => {
+    fetch('https://127.0.0.1:8000/reservations/my-clients/', {
+      method: "GET",
+      credentials: "include",
+    })
+      .then(res => res.json())
+      .then(data => {
+        setMyObjectsReservations(data);
+      })
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    if (!myObjectsReservations || myObjectsReservations.length === 0) return;
+
+    Promise.all(
+      // to improve, use batch fetching instead of single request for each reservation
+      myObjectsReservations.map(element =>
+        fetch(`https://127.0.0.1:8000/users/${element.user}/`, {
+          method: "GET",
+          credentials: "include",
+        }).then(res => res.json())
+      )
+    )
+      .then(results => {
+        setMyClients(results);
+      })
+      .catch(err => console.error(err));
+  }, [myObjectsReservations]);
+  
+
 
   return (
     <>
@@ -82,12 +119,13 @@ function MyAccount() {
         </Link>        
       </div>
 
-      <h2>Your reservations:</h2>
+      <h3>Your reservations:</h3>
       <MyReservations reservations={myReservations} objects={myResObjects} />
 
+      <h3>Your rental objects:</h3>
       <div className={classes.rentalsBar}>
         <div className={classes.rentalsBarInside}>
-          <h3>Your rental objects:</h3>
+          <h3>Object name (rental type) | price per day | address</h3>
           <Link to="/listings/create/">
             <button className={classes.addButton}>
               Add +
@@ -96,6 +134,9 @@ function MyAccount() {
         </div>
       </div>
       <MyObjectsList objects={objects} />
+
+      <h3>Reservations of your objects:</h3>
+      <MyObjectsReservations reservations={myObjectsReservations} objects={objects} clients={myClients} />
     </>
   );
 }

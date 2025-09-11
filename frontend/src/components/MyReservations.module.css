@@ -21,6 +21,7 @@
 .resImage {
   height: 80px;
   width: 140px;
+  object-fit: cover;
 }
 
 .resDetails {
@@ -33,6 +34,7 @@
   min-width: 200px;
   margin-left: auto;
   margin-right: 20px;
+  color: rgb(0, 151, 106);
 }
 
 button {

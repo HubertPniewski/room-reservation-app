@@ -16,7 +16,7 @@ class ReservationSerializer(serializers.ModelSerializer):
             start = instance.start_date_time
             limit = instance.object.reservation_edit_deadline
             now = timezone.now()
-            if start - now < timedelta(days=limit):
+            if abs(start - now < timedelta(days=limit)):
                 raise serializers.ValidationError(
                     f"The reservation cannot be modified later than {limit} days before the reservation start date."
                 )

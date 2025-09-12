@@ -41,4 +41,7 @@
 
 .cancelText {
   text-align: center;
+  width: 95%;
+  max-width: 900px;
+  margin: 0 auto;
 }

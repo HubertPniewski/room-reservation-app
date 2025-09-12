@@ -3,6 +3,9 @@ import classes from "./ReservationDetails.module.css";
 import { useEffect, useState } from "react";
 import html2pdf from "html2pdf.js";
 import "./PDF.css";
+import InfoModal from "../components/InfoModal";
+import ConfirmModal from "../components/ConfirmModal";
+
 
 function ReservationDetails() {
   const { id } = useParams();
@@ -13,6 +16,10 @@ function ReservationDetails() {
   const navigate = useNavigate();
   let totalDays = null;
   let cancelDeadline = null;
+  let canRemoveDate = null;
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     // fetch reservation
@@ -54,13 +61,12 @@ function ReservationDetails() {
       .then(res => res.json())
       .then(data => {
         setClient(data);
-        console.log(data);
       })
   }, [reservation]);
 
   totalDays = Math.floor(new Date(reservation?.end_date)?.getTime() - new Date(reservation?.start_date)?.getTime() + 86400000) / 86400000;
-
   cancelDeadline = new Date(Math.floor(new Date(reservation?.start_date) - object?.reservation_edit_deadline * 86400000));
+  canRemoveDate= new Date(Math.floor(new Date(reservation?.start_date).getTime() + (object?.reservation_edit_deadline + 1) * 86400000));
 
   const generatePDF = () => {
     const element = document.getElementById("reservationDetails");
@@ -90,28 +96,52 @@ function ReservationDetails() {
     })
       .then(res => {
         if (res.ok) {
-          alert("Reservation succesfully deleted.");
-          navigate("/profile/")
+          setMessage("Reservation succesfully deleted.");
         } else {
-          alert("Failed to delete the reservaion.");
+          setMessage("Failed to delete the reservaion.");
         }
+        setConfirmModalOpen(false);
+        setInfoModalOpen(true);
       })
       .catch(err => console.error(err));
   }
 
   return (
     <>    
-      <button 
-        className={new Date() <= cancelDeadline ? classes.cancelBtn : classes.cancelBtnInactive} 
-        disabled={new Date() <= cancelDeadline ? false : true}
-        onClick={handleDeleteReservation}
-      >Cancel Reservation</button>
-      <p className={classes.cancelText}>
-        {new Date() <= cancelDeadline ? 
-          `You can cancel this reservation not later as ${cancelDeadline.toLocaleDateString("pl-PL")}.` :
-          `The cancel deadline is over. You can contact with the owner and personally discuss the situation.`
-        }
-      </p>
+      {new Date() <= Math.floor(new Date(reservation?.start_date)) ? 
+        <>
+          <button 
+            className={new Date() <= cancelDeadline ? classes.cancelBtn : classes.cancelBtnInactive} 
+            disabled={new Date() <= cancelDeadline ? false : true}
+            onClick={() => {
+              setConfirmModalOpen(true);
+            }}
+          >Cancel Reservation</button>
+          <p className={classes.cancelText}>
+            {new Date() <= cancelDeadline ? 
+              `You can cancel this reservation not later as ${cancelDeadline.toLocaleDateString("pl-PL")}.` :
+              `The cancel deadline is over. You can contact with the owner and personally discuss the situation.`
+            }
+          </p>
+        </> : 
+        <>
+          <button 
+            className={new Date() >= canRemoveDate ? classes.cancelBtn : classes.cancelBtnInactive} 
+            disabled={new Date() >= canRemoveDate ? false : true}
+            onClick={() => {
+              setConfirmModalOpen(true);
+            }}
+          >Remove Reservation</button>
+          <p className={classes.cancelText}>
+            {new Date() >= canRemoveDate ? 
+              `You can already delete this reservation. If you do so, the reservation will be deleted permanently for everyone (owner and client).` :
+              `You can't delete this reservation yet. This option will be available from ${canRemoveDate.toLocaleDateString("pl-PL")}. Since this date, both owner and client will be able to delete this reservation permanently for everyone. If you want to save the reservation details, please press "Generate reservation details PDF" button and save the generated PDF file on your device.`
+            }
+          </p>
+        </>
+      }
+      
+      
       <div className={classes.detailsDiv} id="reservationDetails">
         <h1 className={classes.header}>Reservation Details</h1>
         <ul>
@@ -151,6 +181,24 @@ function ReservationDetails() {
       </div>
 
       <button className={classes.pdfButton} onClick={generatePDF}>Generate reservation details PDF</button>
+
+      <ConfirmModal
+        isOpen={confirmModalOpen}
+        onClose={() => setConfirmModalOpen(false)}
+        onConfirm={handleDeleteReservation}
+        title={`Delete reservation`}
+        message="Are you sure you want to delete this reservation for everyone? The decission is final and cannot be reversed."
+      />
+
+      <InfoModal
+        isOpen={infoModalOpen}
+        onClose={() => {
+          setInfoModalOpen(false);
+          navigate("/profile/");
+        }}
+        title={`Object deletion`}
+        message={message}
+      />
     </>
   );
 }

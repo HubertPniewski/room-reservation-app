@@ -47,3 +47,43 @@
   font-weight: bold;
   font-size: 22px;
 }
+
+.starsContainer,
+.starsBackground,
+.starsForeground {
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.starsContainer {
+  display: flex;
+  align-items: center; /* vertically center the count with stars */
+  gap: 6px; /* space between stars and count */
+}
+
+.starsWrapper {
+  position: relative;
+  display: inline-block;
+  font-size: 18px; /* adjust as needed */
+  line-height: 1;
+}
+
+.starsBackground {
+  color: #ccc;
+}
+
+.starsForeground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  color: rgb(0, 199, 139);
+}
+
+.reviewsCount {
+  font-size: 0.8rem;
+  color: #ccc;
+}

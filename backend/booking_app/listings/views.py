@@ -6,6 +6,7 @@ from .filters import ListingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 import json
+from django.db.models import Avg, Count
    
 
 class IsSelf(permissions.BasePermission):
@@ -22,6 +23,12 @@ class RentObjectListView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    def get_queryset(self):
+        return RentObject.objects.annotate(
+            average_rating=Avg('reviews__rating'),
+            reviews_count=Count('reviews'),
+        )
 
 
 class RentObjectDetailView(generics.RetrieveUpdateDestroyAPIView):

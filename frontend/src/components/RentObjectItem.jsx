@@ -17,7 +17,18 @@ function RentObjectItem({ object }) {
       <div className={classes.footer}>
         <p><span className={classes.price}>{(object.day_price_cents)/100} PLN</span> / day</p>
         <p>{object.rental_type}, {object.rooms} {object.rooms == 1 ? "room" : "rooms"}, {object.town}</p>
-        <p>Reviews</p>
+        <div className={classes.starsContainer}>
+          <div className={classes.starsWrapper}>
+            <div className={classes.starsBackground}>☆☆☆☆☆</div>
+            <div
+              className={classes.starsForeground}
+              style={{ width: `${(object?.average_rating / 5) * 100}%` }}
+            >
+              ★★★★★
+            </div>
+          </div>
+          <span className={classes.reviewsCount}>({object?.reviews_count})</span>
+        </div>
       </div>
     </Link>
   );

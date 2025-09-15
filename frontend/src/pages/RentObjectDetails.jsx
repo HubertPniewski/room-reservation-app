@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import PhotoGallery from "../components/PhotoGallery";
+import Review from "../components/Review";
+import ReviewForm from "../components/ReviewForm";
 import classes from "./RentObjectDetails.module.css";
 import defaultAvatar from "../assets/default_avatar.png";
 import DOMPurify from 'dompurify';
@@ -13,13 +15,31 @@ function RentObjectDetails() {
   const [objectOwner, setObjectOwner] = useState(null);
   const { user } = useContext(AuthContext);
   const location = useLocation();
+  const [reviews, setReviews] = useState([]);
+  const [reviewsAuthors, setReviewsAuthors] = useState([]);
+  const [usersReview, setUsersReview] = useState(null);
 
   function formatText(text) {
-  if (!text) return '';
-  return text
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
-    .replace(/\*(.*?)\*/g, '<em>$1</em>');            // *italic*
-}
+    if (!text) return '';
+    return text
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // **bold**
+      .replace(/\*(.*?)\*/g, '<em>$1</em>');            // *italic*
+  }
+
+  function getAverageScore(reviews) {
+    if (!reviews) return;
+
+    let total = 0;
+    let n_reviews = 0;
+
+    reviews.forEach(e => {
+      total += e.rating;
+      n_reviews++;
+    });
+
+    return Math.round(total/n_reviews * 100) / 100;
+  }
+
 
   useEffect(() => {
     fetch(`https://127.0.0.1:8000/listings/${id}/`)
@@ -38,6 +58,37 @@ function RentObjectDetails() {
       .catch(err => console.error(err));
   }, [id]);
 
+
+  useEffect(() => {
+    let isMounted = true;
+
+    fetch(`https://127.0.0.1:8000/reviews/object/${id}/`)
+      .then(res => res.json())
+      .then(async data => {
+        if (!isMounted) return;
+        setReviews(data.results || []);
+
+        if (!data || data.length === 0) return;
+
+        const authors = await Promise.all(data.results.map(review => {
+          return fetch(`https://127.0.0.1:8000/users/${review.author}/`)
+            .then(res => res.json());
+          } 
+        ));
+
+        if (isMounted) setReviewsAuthors(authors);
+      })
+      .catch(err => console.error(err));
+
+    return () => { isMounted = false; };
+  }, [id]);
+
+  useEffect(() => {
+    if (!reviews || reviews.length <= 0) return;
+    reviews.forEach(e => {
+      if (e.author === user?.id) setUsersReview(e);
+    });
+  }, [reviews, user]);
 
   if (!object) {
     return <p>Failed to load the object, please try again later.</p>;
@@ -60,7 +111,7 @@ function RentObjectDetails() {
       <h2 className={classes.details}><span className={classes.detailColor}>Own bathroom:</span> {object.own_bathroom ? "✔" : "✘"}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Parking place:</span> {object.parking_place ? "✔" : "✘"}</h2>
       <h2 className={classes.details}><span className={classes.detailColor}>Pets allowed:</span> {object.pets_allowed ? "✔" : "✘"}</h2>
-      <h3 className={classes.desc}>Description:</h3>
+      <h3 className={classes.desc}>Description</h3>
       <p
         style={{ whiteSpace: 'pre-line', lineHeight: '1.4' }}
         dangerouslySetInnerHTML={{
@@ -92,6 +143,14 @@ function RentObjectDetails() {
           <p>Loading...</p>
         }
       </Link>
+
+      <h3 className={classes.desc}>{reviews && reviews.length > 0 ? `Reviews (${getAverageScore(reviews)}/5 on average)` : "No reviews yet"}</h3>
+      <div>
+        {user ? <ReviewForm review={usersReview} author={user} object={object} /> : <Link to="/login/" state={{ from: location }}><p>Login to post or edit your review</p></Link>}
+        {reviews && reviews.map(review => (
+          ((user && review.author !== user.id) || !user ) && <Review key={review.id} review={review} author={reviewsAuthors && reviewsAuthors.find(author => author.id === review.author)}/>
+        ))}
+      </div>
     </div>
   );
   

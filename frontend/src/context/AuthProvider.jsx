@@ -110,34 +110,6 @@ export function AuthProvider({ children }) {
     return res.json();
   }
 
-  // async function editUser(userData) {
-  //   const res = await fetch(`https://127.0.0.1:8000/users/${userData.id}/`, {
-  //     method: "PATCH",
-  //     body: userData,
-  //     credentials: "include",
-  //   });
-
-  //   if (!res.ok) {   
-  //     let errMessage = "Edition failed";
-  //     try {
-  //       const errData = await res.json();
-
-  //       if (errData.detail) {
-  //         errMessage = errData.detail;
-          
-  //       } else {
-  //         errMessage = JSON.stringify(errData);
-  //         console.log(errMessage);
-  //       }
-  //     } catch (err) {
-  //       errMessage = err.message;
-  //     }
-  //     throw new Error(errMessage);
-  //   }
-
-  //   return res.json();
-  // }
-
   async function refreshToken() {
     const res = await fetch("https://127.0.0.1:8000/users/auth/token/refresh/", {
       method: "POST",

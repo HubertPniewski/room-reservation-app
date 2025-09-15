@@ -1,0 +1,80 @@
+.reviewContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  border-bottom: 1px solid gray;
+  padding-bottom: 25px;
+}
+
+.avatar {
+  height: 50px;
+  width: 50px;
+  border-radius: 100px;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.61);
+  object-fit: cover;
+}
+
+.ownerContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding: 10px;
+}
+
+.ratingTimeRow {
+  color: rgb(138, 138, 138);
+}
+
+.stars {
+  color: rgb(0, 199, 139);
+  font-size: 1.5rem;
+  padding-right: 20px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 100px;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid rgb(0, 199, 139);
+  color: white;
+  font-size: 1rem;
+}
+
+.editButton {
+  width: auto;
+  padding: 0 40px;
+}
+
+.deleteButton {
+  width: auto;
+  padding: 0 40px;
+  background-color: rgba(0, 0, 0, 0);
+  color: red;
+  transition: 0.15s;
+}
+
+.deleteButton:hover {
+  background-color: rgba(0, 0, 0, 0);
+  text-shadow: 0 0 15px rgba(255, 152, 152, 0.664);
+  text-decoration: underline;
+}
+
+.buttonsContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.singleStar {
+  color: rgb(0, 199, 139);
+  font-size: 1.5rem;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}

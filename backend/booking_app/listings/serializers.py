@@ -21,6 +21,8 @@ class RentObjectSerializer(serializers.ModelSerializer):
     new_images = serializers.ListField(
         child=serializers.ImageField(), write_only=True, required=False
     )
+    average_rating = serializers.FloatField(read_only=True)
+    reviews_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = RentObject
@@ -49,6 +51,8 @@ class RentObjectSerializer(serializers.ModelSerializer):
             'new_images',
             'advance_days',
             'max_advance_days',
+            'average_rating',
+            'reviews_count',
         )
         read_only_fields = ['owner']
 

@@ -1,6 +1,7 @@
 from django.db import models
 from datetime import time
 from django.core.validators import MinValueValidator, MaxValueValidator
+import os, uuid
 
 class RentObject(models.Model):
     class RentalType(models.TextChoices):
@@ -44,6 +45,11 @@ class RentObject(models.Model):
     def __str__(self):
         return f"{self.name} ({self.rental_type}) - {self.town}"
     
+
+def rent_object_image_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = f"rentobject_{instance.rent_object.id}_{uuid.uuid4().hex}.{ext}"
+    return os.path.join('rent_objects', filename)
 
 class RentObjectImage(models.Model):
     rent_object = models.ForeignKey(RentObject, on_delete=models.CASCADE, related_name='images')

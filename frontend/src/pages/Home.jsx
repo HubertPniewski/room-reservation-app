@@ -8,7 +8,7 @@ import { useOutletContext } from "react-router-dom";
 function Home() {
   const [objects, setObjects] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { filters, setFilters, limits, setLimits } = useOutletContext();
+  const { filters, setFilters, limits, setLimits, sort, setSort } = useOutletContext();
 
   function filtersToQueryString(filters) {
     return Object.entries(filters)
@@ -20,7 +20,7 @@ function Home() {
   function handleSearch(filters) {
     const query = filtersToQueryString(filters);
 
-    fetch(`https://127.0.0.1:8000/listings/?${query}`)
+    fetch(`https://127.0.0.1:8000/listings/?sort=${sort}&${query}`)
       .then((res) => res.json())
       .then((data) => {
         setObjects(data.results);
@@ -36,9 +36,10 @@ function Home() {
   useEffect(() => {
     const query = filtersToQueryString(filters);
 
-    fetch(`https://127.0.0.1:8000/listings/?${query}`)
+    fetch(`https://127.0.0.1:8000/listings/?${query}&sort=${sort}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         setObjects(data.results);
         if (limits.maxPrice === 5000) {
         setLimits(prev => ({ ...prev, maxPrice: findHighestPrice(data.results) }));
@@ -54,7 +55,7 @@ function Home() {
       }
         setLoading(false);
       });
-  }, []);
+  }, [sort]);
 
   if (loading) return <p>Loading...</p>
 
@@ -93,7 +94,20 @@ function Home() {
   return (
     <div className={classes.homeLayout}>
       <SearchBar onSearch={handleSearchSubmit} highestPrice={limits.maxPrice} highestRooms={limits.maxRooms} highestArea={limits.maxArea} highestDeadline={limits.maxEditDeadline} prevFilters={filters} />
-      <ObejctsList items={objects} />
+      <div className={classes.homeRightContainer}>
+        <div className={classes.sortingContainer}>
+          <p className={classes.sortByText}>Sort by: </p>
+          <select className={classes.sortSelect} value={sort} onChange={e => setSort(e.target.value)}>
+            <option value="newest">Newest</option>
+            <option value="price_asc">Price: Low → High</option>
+            <option value="price_desc">Price: High → Low</option>
+            <option value="rating">Highest Rating</option>
+            <option value="reviews">Most Reviews</option>
+            <option value="random">Random</option>
+          </select>
+        </div>
+        <ObejctsList items={objects} />
+      </div> 
     </div>
   );
 };

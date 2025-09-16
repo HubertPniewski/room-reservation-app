@@ -80,3 +80,8 @@
   width: 30px;
   max-width: 30px;
 }
+
+.selctField {
+  background-color: #ffffff;
+  border: 1px solid #004931;
+}

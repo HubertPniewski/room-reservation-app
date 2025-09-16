@@ -42,7 +42,7 @@ function RentObjectForm({ object }) {
     if (object?.images) setImages(object.images.map(img => ({ ...img, isNew: false })));
     if (object?.reservation_edit_deadline) setReservationEditDeadline(object.reservation_edit_deadline);
     if (object?.advanceDays) setAdvanceDays(object.advance_days);
-    if (object?.reservation_break_minutes) setReservationBreak(object.reservation_break_minutes);
+    if (object?.reservation_break_days) setReservationBreak(object.reservation_break_days);
     if (object?.check_in_out_start_hour) setCheckInStart(object.check_in_start_hour);
     if (object?.check_in_out_end_hour) setCheckInEnd(object.check_in_end_hour);
     if (object?.check_in_out_start_hour) setCheckOutStart(object.check_out_start_hour);
@@ -113,7 +113,7 @@ function RentObjectForm({ object }) {
     formData.append("parking_place", parkingPlace);
     formData.append("reservation_edit_deadline", reservationEditDeadline);
     formData.append("advance_days", advanceDays);
-    formData.append("reservation_break_minutes", reservationBreak);
+    formData.append("reservation_break_days", reservationBreak);
     formData.append("check_in_start_hour", checkInStart);
     formData.append("check_in_end_hour", checkInEnd);
     formData.append("check_out_start_hour", checkOutStart);
@@ -152,7 +152,7 @@ function RentObjectForm({ object }) {
         <input name="name" id="name" value={name} onChange={e => setName(e.target.value)} required />
 
         <label htmlFor="rental_type">Rental type</label>
-        <select name="rental_type" id="rental_type" value={rentalType} onChange={e => setRentalType(e.target.value)}>
+        <select name="rental_type" className={classes.selctField} id="rental_type" value={rentalType} onChange={e => setRentalType(e.target.value)}>
           <option value="room">Room</option>
           <option value="apartment">Apartment</option>
           <option value="cottage">Cottage</option>
@@ -171,7 +171,7 @@ function RentObjectForm({ object }) {
         <input name="town" id="town" value={town} onChange={e => setTown(e.target.value)} required />
 
         <label htmlFor="day_price_cents">Price per day (PLN)</label>
-        <input type="number" step="0.01" name="day_price_cents" id="day_price_cents" value={price/100} onChange={e => setPrice(e.target.value * 100)} min="0" required />
+        <input type="number" step="0.01" name="day_price_cents" id="day_price_cents" value={price ? price/100 : ""} onChange={e => setPrice(e.target.value * 100)} min="0" required />
 
         <label htmlFor="description">Description</label>
         <textarea cols="67" rows="20" name="description" id="description" value={description} onChange={e => setDescription(e.target.value)} />
@@ -194,8 +194,8 @@ function RentObjectForm({ object }) {
         <label htmlFor="reservation_edit_deadline">Reservation edit deadline [days]</label>
         <input type="number" name="reservation_edit_deadline" id="reservation_edit_deadline" value={reservationEditDeadline} onChange={e => setReservationEditDeadline(e.target.value)} />
 
-        <label htmlFor="reservation_break_minutes">Min. interval beetwen reservations [min] ({Math.floor(reservationBreak / 60)} h {reservationBreak % 60} min)</label>
-        <input type="number" name="reservation_break_minutes" id="reservation_break_minutes" value={reservationBreak} onChange={e => setReservationBreak(e.target.value)} />
+        <label htmlFor="reservation_break_days">Min. interval beetwen reservations [days]</label>
+        <input type="number" name="reservation_break_days" id="reservation_break_days" value={reservationBreak} onChange={e => setReservationBreak(e.target.value)} />
 
         <label>Check in hours:</label>
         <div className={classes.hoursContainer}>

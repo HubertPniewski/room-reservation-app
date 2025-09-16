@@ -4,3 +4,41 @@
   width: 100%;
   justify-content: space-between;
 }
+
+.homeRightContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 100px;
+}
+
+.sortingContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  margin: 20px 40px;
+  margin-left: auto;
+}
+
+.sortByText {
+  display: inline-block;
+  margin-right: 5px;
+  font-weight: bold;
+  width: 100%;
+  font-size: 1.3rem;
+}
+
+.sortSelect {
+  font-size: 1.3rem;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid white;
+  color: white;
+  padding: 5px;
+}
+
+.sortSelect option {
+  background-color: rgb(39, 39, 39);
+  border: 1px solid white;
+}

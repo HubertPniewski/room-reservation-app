@@ -30,6 +30,8 @@ function RootLayout() {
     maxEditDeadline: 14,
   });
 
+  const [sort, setSort] = useState("reviews");
+
   useEffect(() => {
     // fetch all listings once and set limits
     fetch('https://127.0.0.1:8000/listings/')
@@ -58,7 +60,7 @@ function RootLayout() {
     <div className={classes.pageWrapper}>
       <Navbar />
       <main>
-        <Outlet context={{ filters, setFilters, limits, setLimits }} />
+        <Outlet context={{ filters, setFilters, limits, setLimits, sort, setSort }} />
       </main>
       <footer>
         &copy; 2025 VacationsPlace

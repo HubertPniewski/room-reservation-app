@@ -74,7 +74,7 @@ function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestD
       </div>
       <div className={classes.formField}>
         <label htmlFor="type">Object type</label>
-        <select name="type" value={filters.type} onChange={handleChange}>
+        <select name="type" className={classes.selctField} value={filters.type} onChange={handleChange}>
           <option value="">Any</option>
           <option value="room">Room</option>
           <option value="cottage">Cottage</option>

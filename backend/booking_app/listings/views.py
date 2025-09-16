@@ -7,6 +7,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.parsers import MultiPartParser, FormParser
 import json
 from django.db.models import Avg, Count
+from django.db.models.functions import Coalesce
+from django.db.models import Value
    
 
 class IsSelf(permissions.BasePermission):
@@ -15,7 +17,6 @@ class IsSelf(permissions.BasePermission):
 
 
 class RentObjectListView(generics.ListCreateAPIView):
-    queryset = RentObject.objects.all()
     serializer_class = RentObjectSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend]
@@ -25,10 +26,27 @@ class RentObjectListView(generics.ListCreateAPIView):
         serializer.save(owner=self.request.user)
 
     def get_queryset(self):
-        return RentObject.objects.annotate(
-            average_rating=Avg('reviews__rating'),
+        qs = RentObject.objects.annotate(
+            average_rating=Coalesce(Avg('reviews__rating'), Value(0.0)),
             reviews_count=Count('reviews'),
         )
+
+        sort = self.request.query_params.get('sort', 'reviews')
+
+        if sort == 'price_asc':
+            qs = qs.order_by('day_price_cents')
+        elif sort == 'price_desc':
+            qs = qs.order_by('-day_price_cents')
+        elif sort == 'rating':
+            qs = qs.order_by('-average_rating')
+        elif sort == 'newest':
+            qs = qs.order_by('-id')
+        elif sort == 'random':
+            qs = qs.order_by('?')
+        else:
+            qs = qs.order_by('-reviews_count')
+
+        return qs
 
 
 class RentObjectDetailView(generics.RetrieveUpdateDestroyAPIView):
@@ -82,12 +100,16 @@ class RentObjectDetailView(generics.RetrieveUpdateDestroyAPIView):
 
         return Response(self.get_serializer(instance).data, status=status.HTTP_200_OK)
 
+
 class MyRentObjectListView(generics.ListAPIView):
     serializer_class = RentObjectSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return RentObject.objects.filter(owner=self.request.user)
+        return RentObject.objects.filter(owner=self.request.user).annotate(
+            average_rating=Avg('reviews__rating'),
+            reviews_count=Count('reviews'),
+        )
     
 
 class RentObjectsByUsersId(generics.ListAPIView):
@@ -96,5 +118,8 @@ class RentObjectsByUsersId(generics.ListAPIView):
 
     def get_queryset(self):
         user_id = self.kwargs.get("user_id")
-        return RentObject.objects.filter(owner=user_id)
+        return RentObject.objects.filter(owner=user_id).annotate(
+            average_rating=Coalesce(Avg('reviews__rating'), Value(0.0)),
+            reviews_count=Count('reviews'),
+        )
     

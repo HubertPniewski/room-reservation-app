@@ -113,9 +113,9 @@ function ReviewForm({ review, author, object }) {
             }}
           ></p>
         }
-        <div className={classes.buttonsContainer}>
-          {!newReview && editMode && <button onClick={() => {setEditMode(false)}} className={classes.editButton}>Cancel</button>}
+        <div className={classes.buttonsContainer}>          
           {!newReview && <button onClick={() => setModalOpen(true)} className={classes.deleteButton}>Delete</button>}
+          {!newReview && editMode && <button onClick={() => {setEditMode(false)}} className={classes.editButton}>Cancel</button>}
           <button onClick={handleButtonClick} className={classes.editButton}>{newReview ? "Post" : editMode ? "Save" : "Edit"}</button>
         </div>
       </div>

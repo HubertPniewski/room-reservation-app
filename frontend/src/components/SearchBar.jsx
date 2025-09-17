@@ -2,24 +2,24 @@ import { useEffect, useState } from 'react';
 import classes from './SearchBar.module.css';
 import Slider from "@mui/material/Slider";
 
-function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestDeadline, prevFilters }) {
+function SearchBar({ onSearch, prevFilters }) {
   const [filters, setFilters] = useState({
     name: "",
     type: "",
     location: "",
-    max_price: highestPrice,
+    max_price: 5000,
     min_price: 0,
     min_rooms: 0,
-    max_rooms: highestRooms,
+    max_rooms: 10,
     min_area: 0,
-    max_area: highestArea,
+    max_area: 300,
     pets: false,
     kitchen: false,
     bathroom: false,
     parking: false,
     min_advance: 30,
     max_advance: 500,
-    edit_deadline: highestDeadline,
+    edit_deadline: 50,
   });
 
   useEffect(() => {
@@ -103,7 +103,7 @@ function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestD
               max_price: newRange[1],
             }))}
           min={0}
-          max={highestPrice}
+          max={5000}
           step={10}
         />
       </div>
@@ -119,7 +119,7 @@ function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestD
               max_rooms: newRange[1],
             }))}
           min={0}
-          max={highestRooms}
+          max={10}
           step={1}
         />
       </div>
@@ -135,7 +135,7 @@ function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestD
               max_area: newRange[1],
             }))}
           min={0}
-          max={highestArea}
+          max={300}
           step={1}
         />
       </div>
@@ -224,7 +224,7 @@ function SearchBar({ onSearch, highestPrice, highestRooms, highestArea, highestD
               edit_deadline: newRange[0],
             }))}
           min={0}
-          max={highestDeadline}
+          max={50}
           step={1}
         />
       </div>

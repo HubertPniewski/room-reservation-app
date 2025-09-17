@@ -18,6 +18,11 @@ function RentObjectDetails() {
   const [reviews, setReviews] = useState([]);
   const [reviewsAuthors, setReviewsAuthors] = useState([]);
   const [usersReview, setUsersReview] = useState(null);
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [reviewsPage, setReviewsPage] = useState(1);
+  const pageSize = 20;
+  const totalPages = Math.ceil(totalReviews / pageSize) || 1;
+
 
   function formatText(text) {
     if (!text) return '';
@@ -62,11 +67,16 @@ function RentObjectDetails() {
   useEffect(() => {
     let isMounted = true;
 
-    fetch(`https://127.0.0.1:8000/reviews/object/${id}/`)
+    fetch(`https://127.0.0.1:8000/reviews/object/${id}/?page=${reviewsPage}`)
       .then(res => res.json())
       .then(async data => {
         if (!isMounted) return;
-        setReviews(data.results || []);
+
+        const results = data.results || data;
+        const count = data.count || results.length; 
+
+        setReviews(results);
+        setTotalReviews(count);
 
         if (!data || data.length === 0) return;
 
@@ -81,7 +91,7 @@ function RentObjectDetails() {
       .catch(err => console.error(err));
 
     return () => { isMounted = false; };
-  }, [id]);
+  }, [id, reviewsPage]);
 
   useEffect(() => {
     if (!reviews || reviews.length <= 0) return;
@@ -144,12 +154,42 @@ function RentObjectDetails() {
         }
       </Link>
 
-      <h3 className={classes.desc}>{reviews && reviews.length > 0 ? `Reviews (${getAverageScore(reviews)}/5 on average)` : "No reviews yet"}</h3>
+      <h3 className={classes.desc}>{reviews && reviews.length > 0 ? `Reviews: ${getAverageScore(reviews)} on average from ${totalReviews} reviews` : "No reviews yet"}</h3>
       <div>
         {user ? <ReviewForm review={usersReview} author={user} object={object} /> : <Link to="/login/" state={{ from: location }}><p>Login to post or edit your review</p></Link>}
         {reviews && reviews.map(review => (
           ((user && review.author !== user.id) || !user ) && <Review key={review.id} review={review} author={reviewsAuthors && reviewsAuthors.find(author => author.id === review.author)}/>
         ))}
+      </div>
+      <div className={classes.pagesContainer}>
+        <button 
+          className={classes.pageButton} 
+          onClick={() => {
+            if (reviewsPage > 1) {
+              setReviewsPage(prev => prev - 1);
+            }
+          }}
+          disabled={reviewsPage <= 1}
+        >{"<"}</button>
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button 
+            className={classes.pageButton}
+            key={i}
+            disabled={reviewsPage === i + 1}
+            onClick={() => setReviewsPage(i + 1)}
+          >
+            {i + 1}
+          </button>
+        ))}
+        <button 
+          className={classes.pageButton} 
+          onClick={() => {
+            if (reviewsPage < totalPages) {
+              setReviewsPage(prev => prev + 1);
+            }
+          }}
+          disabled={reviewsPage >= totalPages}
+        >{">"}</button>
       </div>
     </div>
   );

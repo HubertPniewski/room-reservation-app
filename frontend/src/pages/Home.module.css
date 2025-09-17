@@ -42,3 +42,26 @@
   background-color: rgb(39, 39, 39);
   border: 1px solid white;
 }
+
+.pagesContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  column-gap: 5px;
+  margin-top: 30px;
+}
+
+.pageButton {
+  width: 35px;
+  height: 35px;
+  margin: 0;
+  padding: 0;
+}
+
+.resultsCount {
+  margin-left: 40px;
+  font-size: 1.4rem;
+  font-weight: bold;
+}

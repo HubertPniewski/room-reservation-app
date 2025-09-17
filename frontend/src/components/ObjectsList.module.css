@@ -12,3 +12,10 @@
 .container > * {
   flex: 0 0 350px;
 }
+
+.loadMoreBtn {
+  margin: 20px auto;
+  width: auto;
+  padding: 10px 40px;
+  text-align: center;
+}

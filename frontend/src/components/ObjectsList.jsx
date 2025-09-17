@@ -10,8 +10,8 @@ function ObejctsList({ items }) {
     <div className={classes.container}>
       {items.map((obj) => (
         <RentObjectItem key={obj.id} object={obj} />
-      ))}
-    </div>
+      ))} 
+    </div> 
   );
 }
 

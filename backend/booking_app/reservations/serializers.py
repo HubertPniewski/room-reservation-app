@@ -7,8 +7,8 @@ from django.utils import timezone
 class ReservationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reservation
-        fields = ['id', 'object', 'user', 'start_date', 'end_date']
-        read_only_fields = ['user',]
+        fields = ['id', 'object', 'user', 'created_at', 'start_date', 'end_date', 'day_price_cents']
+        read_only_fields = ['user', 'day_price_cents', 'created_at']
 
     def validate(self, data):
         instance = self.instance

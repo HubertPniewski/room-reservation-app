@@ -8,6 +8,7 @@ import defaultAvatar from "../assets/default_avatar.png";
 import DOMPurify from 'dompurify';
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import api from "../api";
 
 function RentObjectDetails() {
   const { id } = useParams();
@@ -22,6 +23,7 @@ function RentObjectDetails() {
   const [reviewsPage, setReviewsPage] = useState(1);
   const pageSize = 20;
   const totalPages = Math.ceil(totalReviews / pageSize) || 1;
+  const [notFound, setNotFound] = useState(false);
 
 
   function formatText(text) {
@@ -46,21 +48,37 @@ function RentObjectDetails() {
   }
 
 
+  // useEffect(() => {
+  //   fetch(`https://127.0.0.1:8000/listings/${id}/`)
+  //     .then(res => res.json())
+  //     .then(data => {
+  //       setObject(data);
+  //       if (!data?.owner) return null;
+  //       return fetch(`https://127.0.0.1:8000/users/${data.owner}`);
+  //     })
+  //     .then(res => (res ? res.json() : null))
+  //     .then(data => {
+  //       if (data) {
+  //         setObjectOwner(data);
+  //       }
+  //     })
+  //     .catch(err => console.error(err));
+  // }, [id]);
   useEffect(() => {
-    fetch(`https://127.0.0.1:8000/listings/${id}/`)
-      .then(res => res.json())
-      .then(data => {
-        setObject(data);
-        if (!data?.owner) return null;
-        return fetch(`https://127.0.0.1:8000/users/${data.owner}`);
-      })
-      .then(res => (res ? res.json() : null))
-      .then(data => {
-        if (data) {
-          setObjectOwner(data);
+    const fetchObject = async () => {
+      try {
+        const res = await api.get(`/listings/${id}/`);
+        setObject(res.data);
+
+        if (res.data?.owner) {
+          const ownerRes = await api.get(`/users/${res.data.owner}`);
         }
-      })
-      .catch(err => console.error(err));
+      } catch (err) {
+        if (err.response && err.response.status === 404) setNotFound(true);
+        else console.error(err);
+      }
+    }    
+    fetchObject();
   }, [id]);
 
 

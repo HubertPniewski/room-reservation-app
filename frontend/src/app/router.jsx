@@ -12,12 +12,13 @@ import AddRentObject from "../pages/AddRentObject";
 import Reservation from "../pages/Reservation";
 import ReservationDetails from "../pages/ReservationDetails";
 import ProfileEdit from "../pages/ProfileEdit";
+import ErrorPage from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <RootLayout />,
-    errorElement: <NotFound />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Home /> },
       { path: "login/", element: <LoginPage /> },
@@ -30,6 +31,7 @@ const router = createBrowserRouter([
       { path: "listings/:id/reservation/", element: <Reservation /> },
       { path: "reservations/:id/", element: <ReservationDetails /> },
       { path: "profile/edit/", element: <ProfileEdit /> },
+      { path: "404-not-found/", element: <NotFound /> },
     ],
   },
 ]);

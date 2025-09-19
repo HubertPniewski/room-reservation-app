@@ -18,6 +18,11 @@ class ReviewsByObjectView(generics.ListCreateAPIView):
     def get_queryset(self):
         return Review.objects.filter(object_id=self.kwargs['object_id']).order_by('-modified')
     
+    def get_serializer_context(self):
+        ctx = super().get_serializer_context()
+        ctx['rent_object'] = get_object_or_404(RentObject, pk=self.kwargs['object_id'])
+        return ctx
+    
     def perform_create(self, serializer):
         rent_object = get_object_or_404(RentObject, pk=self.kwargs['object_id'])
         serializer.save(author=self.request.user, object=rent_object)

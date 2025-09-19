@@ -6,11 +6,11 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
-        read_only_fields = ['author', 'modified']
+        read_only_fields = ['author', 'modified', 'object']
 
     def validate(self, attrs):
         author = attrs.get('author') or self.context['request'].user
-        obj = attrs.get('object')
+        obj = attrs.get('object') or self.context.get('rent_object')
         request = self.context.get('request')
 
         if request and request.method == 'POST' and Review.objects.filter(author=author, object=obj).exists():

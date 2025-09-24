@@ -28,7 +28,7 @@ function Review({ review, author }) {
     <div className={classes.reviewContainer}>
       <Link to={`/users/${author?.id}/`}>
         <div className={classes.ownerContainer}>
-          <img className={classes.avatar} src={author?.profile_image ? author?.profile_image : defaultAvatar} />
+          <img className={classes.avatar} src={author?.profile_image ? author.profile_image : defaultAvatar} />
           <h2 className={classes.userName}>{author?.first_name} {author?.last_name}</h2>
         </div>
       </Link>

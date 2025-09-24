@@ -47,31 +47,16 @@ function RentObjectDetails() {
     return Math.round(total/n_reviews * 100) / 100;
   }
 
-
-  // useEffect(() => {
-  //   fetch(`https://127.0.0.1:8000/listings/${id}/`)
-  //     .then(res => res.json())
-  //     .then(data => {
-  //       setObject(data);
-  //       if (!data?.owner) return null;
-  //       return fetch(`https://127.0.0.1:8000/users/${data.owner}`);
-  //     })
-  //     .then(res => (res ? res.json() : null))
-  //     .then(data => {
-  //       if (data) {
-  //         setObjectOwner(data);
-  //       }
-  //     })
-  //     .catch(err => console.error(err));
-  // }, [id]);
   useEffect(() => {
     const fetchObject = async () => {
       try {
         const res = await api.get(`/listings/${id}/`);
         setObject(res.data);
+        document.title = res.data.name;
 
         if (res.data?.owner) {
           const ownerRes = await api.get(`/users/${res.data.owner}`);
+          setObjectOwner(ownerRes.data)
         }
       } catch (err) {
         if (err.response && err.response.status === 404) setNotFound(true);

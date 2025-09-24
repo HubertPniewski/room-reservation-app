@@ -3,6 +3,7 @@ import classes from "./Errors.module.css";
 import { useRouteError } from "react-router-dom";
 
 function ErrorPage() {
+  document.title = "Error - VacationsPlace";
   const error = useRouteError();
   return (
     <div className={classes.errorContainer}>

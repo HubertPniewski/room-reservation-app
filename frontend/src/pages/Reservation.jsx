@@ -16,6 +16,7 @@ moment.updateLocale("pl-PL", {
 const localizer = momentLocalizer(moment);
 
 function Reservation() {
+  document.title = "Reservation";
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(new Date());
   const [mode, setMode] = useState(null); // null / start / end
@@ -193,10 +194,11 @@ function Reservation() {
   return (
     <div className={classes.calendarContainer}>
       <h1>Object reservation: {object?.name}</h1>
-      <button onClick={() => {setMode("start"); setPreviewEvent(null)}} className={mode && mode === "start" ? classes.highlighted : ""}>Select Start ({selectedStart?.toLocaleDateString()})</button>
-      <button onClick={() => setMode("end")} className={mode && mode === "end" ? classes.highlighted : ""}>Select End ({selectedEnd?.toLocaleDateString()})</button>
-
-      <div style={{ marginBottom: "10px" }}>
+      <div className={classes.selectButtonsContainer}>
+        <button onClick={() => {setMode("start"); setPreviewEvent(null)}} className={mode && mode === "start" ? classes.highlighted : ""}>Select Start ({selectedStart?.toLocaleDateString()})</button>
+        <button onClick={() => setMode("end")} className={mode && mode === "end" ? classes.highlighted : ""}>Select End ({selectedEnd?.toLocaleDateString()})</button>
+      </div>
+      <div className={classes.selectButtonsContainer}>
         <button onClick={() => setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1))} disabled={currentDate <= today}>
           ← Prev month
         </button>

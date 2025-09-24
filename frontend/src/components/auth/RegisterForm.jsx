@@ -107,6 +107,7 @@ function RegisterForm() {
 
         <label className={classes.termsCheckbox} htmlFor="termsAccept">
           <input
+            id="termsAccept"
             name="termsAccept"
             type="checkbox"
             checked={termsAccepted}

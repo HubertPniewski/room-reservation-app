@@ -8,6 +8,7 @@ import ConfirmModal from "../components/ConfirmModal";
 
 
 function ReservationDetails() {
+  document.title = "Reservation details";
   const { id } = useParams();
   const [reservation, setReservation] = useState(null);
   const [object, setObject] = useState(null);

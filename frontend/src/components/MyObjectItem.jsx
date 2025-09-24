@@ -10,22 +10,6 @@ function MyObjectItem({ object, onDelete }) {
   const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
   const [infoMessage, setInfoMessage] = useState("");
 
-  // function handleConfirm() {
-  //   fetch(`https://127.0.0.1:8000/listings/${object.id}/`, {
-  //     method: "DELETE",
-  //     credentials: "include",
-  //   })
-  //     .then(res => {
-  //       if (res.ok) {
-  //         setInfoMessage(`The ${object.name} was successfully deleted.`);
-  //       } else {
-  //         setInfoMessage(`Failed to delete ${object.name}. Try again later or contact with the administration.`);
-  //       }
-  //       setIsInfoModalOpen(true);
-  //     })
-  //     .catch(err => console.error(err));
-  //   setIsModalOpen(false);
-  // };
   function handleConfirm() {
     api.delete(`/listings/${object.id}/`)
       .then(() => {

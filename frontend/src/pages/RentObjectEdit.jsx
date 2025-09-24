@@ -13,6 +13,7 @@ function RentObjectEdit() {
       .then(res => res.json())
       .then(data => {
         setObject(data);
+        document.title = `Edit ${data?.name}`;
       })
     .catch(err => console.error(err));
   }, [id]);

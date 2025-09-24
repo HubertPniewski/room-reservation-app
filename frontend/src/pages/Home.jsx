@@ -6,6 +6,7 @@ import { useOutletContext } from "react-router-dom";
 
 
 function Home() {
+  document.title = "VacationsPlace";
   const [objects, setObjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const { filters, setFilters, currentPage, sort, setSort, setCurrentPage } = useOutletContext();

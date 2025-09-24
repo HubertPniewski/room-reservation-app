@@ -7,5 +7,10 @@ export default defineConfig({
   plugins: [react(), mkcert()],
   server: {
     https: true
-  }
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/setupTests.js',
+  },
 })

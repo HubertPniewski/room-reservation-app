@@ -1,9 +1,3 @@
-/* .calendarContainer {
-  height: 750px;
-  padding: 10px;
-  min-width: 700px;
-} */
-
 .calendarContainer {
   display: flex;
   flex-direction: column;
@@ -86,4 +80,10 @@
 
 .centeredButton {
   margin: 10px auto;
+}
+
+.selectButtonsContainer {
+  display: flex;
+  flex-direction: row;
+  margin: 5px;
 }

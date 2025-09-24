@@ -5,6 +5,7 @@ import { useState } from "react";
 
 
 function RootLayout() {
+  document.title = "VacationsPlace";
   const [filters, setFilters] = useState({
     name: "",
     type: "",

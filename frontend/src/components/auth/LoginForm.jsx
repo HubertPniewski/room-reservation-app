@@ -30,10 +30,10 @@ function LoginForm({ prevUrl }) {
   return (
     <form className={classes.form} onSubmit={handleSubmit}>
       <h2>Login</h2>
-      <input type="email" value={email} placeholder="email" onChange={e => setEmail(e.target.value)} />
-      <input type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <input name="email" type="email" value={email} placeholder="email" onChange={e => setEmail(e.target.value)} />
+      <input name="password" type="password" placeholder="password" value={password} onChange={e => setPassword(e.target.value)} />
       {invalidCredentials && <p className={classes.invalidCredentials}>Invalid email or password</p>}
-      <button type="submit">Log in</button>
+      <button name="submit" type="submit">Log in</button>
       <p className={classes.p}>Don't have an account yet? <Link className={classes.link} to="/register">Register now</Link></p>
     </form>
   );

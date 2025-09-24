@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import classes from "./Review.module.css";
 import DOMPurify from 'dompurify';
 import ConfirmModal from "./ConfirmModal.jsx";
+import defaultAvatar from '../assets/default_avatar.png';
 
 function getStars(review) {
   if (!review) return "";
@@ -44,7 +45,6 @@ function ReviewForm({ review, author, object }) {
 
   async function handleButtonClick() {
     if (editMode) {
-      console.log(object.id);
       const url = newReview ? `object/${object?.id}` : `${review?.id}`;
       const method = newReview ? "POST" : "PATCH";
       await fetch(`https://127.0.0.1:8000/reviews/${url}/`, {
@@ -84,17 +84,17 @@ function ReviewForm({ review, author, object }) {
     <>
       <div className={classes.reviewContainer}>
         <div className={classes.ownerContainer}>
-          <img className={classes.avatar} src={author?.profile_image && author?.profile_image} />
+          <img className={classes.avatar} src={author?.profile_image ? author.profile_image : defaultAvatar} />
           <h2 className={classes.userName}>{author?.first_name} {author?.last_name}</h2>
         </div>
         <p className={classes.ratingTimeRow}>
           {editMode ? 
-            <span className={classes.stars} onMouseLeave={() => setRatingSelection(rating)} onClick={() => setRating(ratingSelection)}>
-              <span className={classes.singleStar} onMouseOver={() => setRatingSelection(1)}>★</span>
-              <span className={classes.singleStar} onMouseOver={() => setRatingSelection(2)}>{ratingSelection >= 2 ? "★" : "☆"}</span>
-              <span className={classes.singleStar} onMouseOver={() => setRatingSelection(3)}>{ratingSelection >= 3 ? "★" : "☆"}</span>
-              <span className={classes.singleStar} onMouseOver={() => setRatingSelection(4)}>{ratingSelection >= 4 ? "★" : "☆"}</span>
-              <span className={classes.singleStar} onMouseOver={() => setRatingSelection(5)}>{ratingSelection >= 5 ? "★" : "☆"}</span>
+            <span className={classes.stars} onMouseLeave={() => setRatingSelection(rating)}>
+              <span data-testid="1rate" className={classes.singleStar} onMouseOver={() => setRatingSelection(1)} onClick={() => setRating(1)}>★</span>
+              <span data-testid="2rate" className={classes.singleStar} onMouseOver={() => setRatingSelection(2)} onClick={() => setRating(2)}>{ratingSelection >= 2 ? "★" : "☆"}</span>
+              <span data-testid="3rate" className={classes.singleStar} onMouseOver={() => setRatingSelection(3)} onClick={() => setRating(3)}>{ratingSelection >= 3 ? "★" : "☆"}</span>
+              <span data-testid="4rate" className={classes.singleStar} onMouseOver={() => setRatingSelection(4)} onClick={() => setRating(4)}>{ratingSelection >= 4 ? "★" : "☆"}</span>
+              <span data-testid="5rate" className={classes.singleStar} onMouseOver={() => setRatingSelection(5)} onClick={() => setRating(5)}>{ratingSelection >= 5 ? "★" : "☆"}</span>
             </span> :
             <span className={classes.stars}>{getStars(review)}</span>
           }

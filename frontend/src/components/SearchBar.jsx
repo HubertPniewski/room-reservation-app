@@ -74,7 +74,7 @@ function SearchBar({ onSearch, prevFilters }) {
       </div>
       <div className={classes.formField}>
         <label htmlFor="type">Object type</label>
-        <select name="type" className={classes.selctField} value={filters.type} onChange={handleChange}>
+        <select name="type" id="type" className={classes.selctField} value={filters.type} onChange={handleChange}>
           <option value="">Any</option>
           <option value="room">Room</option>
           <option value="cottage">Cottage</option>
@@ -94,6 +94,7 @@ function SearchBar({ onSearch, prevFilters }) {
       <div className={classes.sliderField}>
         <label>Price: {filters.min_price} zł - {filters.max_price} zł</label>
         <Slider className={classes.slider}
+          data-testid="price-slider"
           sx={sliderStyles}
           value={[filters.min_price, filters.max_price]}
           onChange={(_, newRange) => 
@@ -110,6 +111,7 @@ function SearchBar({ onSearch, prevFilters }) {
       <div className={classes.sliderField}>
         <label>Rooms: {filters.min_rooms} - {filters.max_rooms}</label>
         <Slider className={classes.slider}
+          data-testid="rooms-slider"
           sx={sliderStyles}
           value={[filters.min_rooms, filters.max_rooms]}
           onChange={(_, newRange) => 
@@ -126,6 +128,7 @@ function SearchBar({ onSearch, prevFilters }) {
       <div className={classes.sliderField}>
         <label>Area: {filters.min_area} m² - {filters.max_area} m²</label>
         <Slider className={classes.slider}
+          data-testid="area-slider"
           sx={sliderStyles}
           value={[filters.min_area, filters.max_area]}
           onChange={(_, newRange) => 
@@ -145,47 +148,52 @@ function SearchBar({ onSearch, prevFilters }) {
         <input 
           className={classes.check}
           name="pets"
+          id='pets'
           type="checkbox"
           checked={filters.pets}
           onChange={handleChange}
         />
-        <p className={classes.checkboxDetail}>Pets allowed</p>
+        <label className={classes.checkboxDetail} htmlFor='pets'>Pets allowed</label>
       </div>
       <div className={classes.checkboxField}>
         <input 
           className={classes.check}
           name="kitchen"
+          id='kitchen'
           type="checkbox"
           checked={filters.kitchen}
           onChange={handleChange}
         />
-        <p className={classes.checkboxDetail}>Own kitchen</p>
+        <label className={classes.checkboxDetail} htmlFor='kitchen'>Own kitchen</label>
       </div>
       <div className={classes.checkboxField}>
         <input 
           className={classes.check}
           name="bathroom"
+          id='bathroom'
           type="checkbox"
           checked={filters.bathroom}
           onChange={handleChange}
         />
-        <p className={classes.checkboxDetail}>Own bathroom</p>
+        <label className={classes.checkboxDetail} htmlFor='bathroom'>Own bathroom</label>
       </div>
       <div className={classes.checkboxField}>
         <input 
           className={classes.check}
           name="parking"
+          id='parking'
           type="checkbox"
           checked={filters.parking}
           onChange={handleChange}
         />
-        <p className={classes.checkboxDetail}>Parking place </p>
+        <label className={classes.checkboxDetail} htmlFor='parking'>Parking place </label>
       </div>
 
       {/* date-time fields */}
       <div className={classes.sliderField}>
         <label>Minimum reservation advance not more than: {`${filters.min_advance} days`}</label>
         <Slider className={classes.slider}
+          data-testid="advance-slider"
           sx={sliderStyles}
           value={[filters.min_advance]}
           onChange={(_, newRange) => 
@@ -201,6 +209,7 @@ function SearchBar({ onSearch, prevFilters }) {
       <div className={classes.sliderField}>
         <label>Maximum reservation advance: {filters.max_advance == 0 ? "no limit" : `${filters.max_advance} days`}</label>
         <Slider className={classes.slider}
+          data-testid="max_deadline-slider"
           sx={sliderStyles}
           value={[filters.max_advance]}
           onChange={(_, newRange) => 
@@ -216,6 +225,7 @@ function SearchBar({ onSearch, prevFilters }) {
       <div className={classes.sliderField}>
         <label>Maximum reservation cancel deadline: {filters.edit_deadline == 0 ? "no limit" : `${filters.edit_deadline} days`}</label>
         <Slider className={classes.slider}
+          data-testid="max_cancel-slider"
           sx={sliderStyles}
           value={[filters.edit_deadline]}
           onChange={(_, newRange) => 

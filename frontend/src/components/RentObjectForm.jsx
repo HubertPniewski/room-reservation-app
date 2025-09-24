@@ -18,7 +18,7 @@ function RentObjectForm({ object }) {
   const [images, setImages] = useState(object?.images?.map(img => ({ ...img, isNew: false })) || []);
   const [reservationEditDeadline, setReservationEditDeadline] = useState(object?.reservation_edit_deadline || 7);
   const [advanceDays, setAdvanceDays] = useState(object?.advance_days || 7);
-  const [reservationBreak, setReservationBreak] = useState(object?.reservation_break_minutes || 600);
+  const [reservationBreak, setReservationBreak] = useState(object?.reservation_break_minutes || 0);
   const [checkInStart, setCheckInStart] = useState(object?.check_in_start_hour || "");
   const [checkInEnd, setCheckInEnd] = useState(object?.check_in_end_hour || "");
   const [checkOutStart, setCheckOutStart] = useState(object?.check_out_start_hour || "");
@@ -149,7 +149,7 @@ function RentObjectForm({ object }) {
     <div className={classes.formContainer}>
       <form className={classes.form} onSubmit={handleSubmit}>
         <label htmlFor="name">Object name</label>
-        <input name="name" id="name" value={name} onChange={e => setName(e.target.value)} required />
+        <input name="name" id="name" placeholder="Object name" value={name} onChange={e => setName(e.target.value)} required />
 
         <label htmlFor="rental_type">Rental type</label>
         <select name="rental_type" className={classes.selctField} id="rental_type" value={rentalType} onChange={e => setRentalType(e.target.value)}>

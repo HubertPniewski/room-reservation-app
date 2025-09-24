@@ -72,8 +72,9 @@
 
 .checkboxDetail {
   flex: none;
-  width: 100px;
+  width: 150px;
   font-size: 15px;
+  margin-top: 0;
 }
 
 .check {

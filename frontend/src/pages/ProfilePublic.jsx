@@ -5,6 +5,7 @@ import ObejctsList from "../components/ObjectsList";
 
 
 function ProfilePublic() {
+  document.title = "User profile";
   const id = useParams();
   const [user, setUser] = useState(null);
   const [objects, setObjects] = useState([]);

@@ -11,7 +11,10 @@ function Navbar() {
 
   return (
     <div className={classes.background}>
-      <h1>VacationsPlace</h1>
+      <Link to="/" className={classes.logoLink}>
+        <img className={classes.logoImg} src="favicon.ico"/>
+        <h1 className={classes.logoText}>VacationsPlace</h1>
+      </Link>
       <nav>
         <Link className={classes.button} to="/">Home</Link>
         {user ? (

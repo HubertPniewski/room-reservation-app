@@ -39,3 +39,22 @@ nav {
 .button:hover {
   background-color: rgba(0, 0, 0, 0.226);
 }
+
+.logoLink {
+  height: 70px;
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  justify-content: center;
+  align-items: center;
+  column-gap: 20px;
+}
+
+.logoImg {
+  height: 60px;
+  width: 60px;
+}
+
+.logoText {
+  font-size: 40px;
+}

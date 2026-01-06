@@ -4,9 +4,7 @@ launch django server: python manage.py runserver_plus --cert-file certs/localhos
 A simple room/apartment reservation app, using Django as a Backend and React as a frontend.
 
 ## to login to the admin panel use:
-email: admin1@admin1.com
-password: Admin1
-
+Admin credentials can be created locally using: python manage.py createsuperuser
 
 # **API ENDPOINTS**
 

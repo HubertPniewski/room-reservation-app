@@ -1,0 +1,6 @@
+in 1st cmd:
+backend\venv\Scripts\activate
+python backend\booking_app\manage.py runserver_plus --cert-file backend/booking_app/certs/localhost+1.pem --key-file backend/booking_app/certs/localhost+1-key.pem
+
+in 2nd cmd:
+npm run dev --prefix frontend

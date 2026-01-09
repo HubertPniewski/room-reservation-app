@@ -1,37 +1,127 @@
-launch django server: python manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+# Room Reservation App
+A web application for short-term apartment and room reservations. 
+Users can browse listings, make reservations, create their own offers, manage their bookings and listings, post reviews. 
 
-# room-reservation-app
-A simple room/apartment reservation app, using Django as a Backend and React as a frontend.
+The project was developed as a personal portfolio project using Django and React. 
 
-## to login to the admin panel use:
-Admin credentials can be created locally using: python manage.py createsuperuser
+## Features
 
-# **API ENDPOINTS**
+### Users
+- User registration and authentication
+- JWT-based authorization
+- Public and private user profiles
+- User profile editing
 
-## Authorization
-*'POST auth/token/'* - log in, obtain access and refresh token
-*'POST auth/token/refresh/'* - refresh token 
+### Listings
+- Browse available apartments, rooms, cottages
+- View listing details
+- Create, edit, delete own listings
 
-## Users
-*'GET users/id/'* - get user public details
-*'GET users/id/'* - get user public details + contact (authorization required)
-*'POST users/'* - add new user 
-*'PUT/PATCH/DELETE users/id/'* - update or delete specific user (authorization required)
-*'GET users/me/'* - redirect to users/my-id/
+### Reservations
+- Make reservations for selected dates
+- Manage own reservations
+- View reservations made by clients 
+- Generate reservation details PDFs
 
-## Listings
-*'GET listings/'* - list of all rental objects
-*'GET listings/id'* - details of a specific rental object
-*'POST listings/'* - add a new rental object (authorization required)
-*'GET listings/my-objects/'* - list of all current user's objects (authorization required)
-*'PUT/PATCH/DELETE listings/id/edit/'* - edit/delete object (authorization required)
+### Reviews
+- Browse other users' reviews on listings
+- Post, edit, delete own reviews
 
-## Reservations
-*'GET reservations//id'* - get reservation details (authorization required)
-*'PATH/PUT reservations/details/id'* - edit reservation details (authorization required)
-*'DELETE reservations/details/id'* - delete reservation details (authorization required)
-*'GET reservations/my-reservations/'* - get all my reservations (authorization required)
-*'GET reservations/my-clients/'* - get all my objects' reservations (authorization required)
-*'POST reservations/'* - add new reservation (authorization required)
+## Screenshots
 
-## Reviews
+### Browsing listings on the homepage 
+![Home](screenshots/listings.png)
+
+### Listing details
+![Listing](screenshots/listing_details.png)
+
+### User registration
+![Registration](screenshots/registration.png)
+
+### Reservation making panel
+![Reservation](screenshots/calendar.png)
+
+### Reviews
+![Reviews](screenshots/reviews.png)
+
+### Admin panel (Django Admin)
+![Admin](screenshots/admin.png)
+
+## Tech Stack
+- Backend: Django, Django REST Framework
+- Frontend: React 
+- Database: PostgreSQL
+- Authentication: JWT
+- API documentation: Swagger / Redoc
+
+## Running the project locally
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+- PostgreSQL
+
+### Backend
+```bash
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python booking_app/manage.py migrate
+python booking_app/manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+```
+Backend will be available at: https://localhost:8000/
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend will be available at: https://localhost:5173/
+
+## Environment variables
+
+The application uses environment variables for sensitive configuration
+(e.g. database credentials).
+
+Create a `.env` file in the project root with the following variables:
+
+- DB_NAME
+- DB_USER
+- DB_PASSWORD
+- DB_HOST
+- DB_PORT
+
+### Admin
+Admin credentials can be created locally using: 
+cd backend/booking_app
+python manage.py createsuperuser 
+
+Admin panel available at: https://localhost:8000/admin/
+
+## API Documentation
+
+The backend exposes a REST API documented using OpenAPI.
+
+Interactive documentation is available locally at:
+
+- Swagger UI: https://localhost:8000/api/docs/
+- Redoc: https://localhost:8000/api/redoc/
+
+## Disclaimer
+
+All user data, addresses, and reservations shown in the screenshots are fictional
+and used for demonstration purposes only
+
+
+## What I learned
+
+- Designing REST APIs with Django REST Framework
+- Implementing JWT-based authentication and authorization
+- Working with relational databases (PostgreSQL)
+- Managing environment variables and sensitive configuration
+- Structuring a full-stack application (Django + React)
+- Using Git with regular commits during development
+
+The project was developed iteratively over several months with regular commits.

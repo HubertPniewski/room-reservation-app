@@ -1,0 +1,454 @@
+[
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$cWkTGf4Xj5N5MJItu8WwYS$kU7Fw4feX4GhADEPX/ZF1pj3BSYSKZYUM8d+koJSyI0=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "anowak@mail.com",
+    "first_name": "Adam",
+    "last_name": "Nowak",
+    "phone_number": "+48766777888",
+    "date_joined": "2026-03-07T14:56:42.257Z",
+    "profile_image": "user_profiles/60ce5bff527e7_o_large_SRNjgpY.jpg",
+    "terms_accepted": true,
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$j69xM6bHjhTjFlVblPC3k3$/xkYkebumrBgzQl8LAtXD3QjlIyW4YPhv85osushJmo=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "mnow@mail.com",
+    "first_name": "Marek",
+    "last_name": "Nowicki",
+    "phone_number": "+48789789789",
+    "date_joined": "2026-03-07T17:42:25.197Z",
+    "profile_image": "",
+    "terms_accepted": true,
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$EoYK4co6m6CPOAP0WdEWcF$0ertQBHbh4/rQaJz8MTSxtNLkBMgJm+p2Z/axYAPF9k=",
+    "last_login": "2026-03-08T09:09:57.440Z",
+    "is_superuser": true,
+    "email": "admin1@admin1.com",
+    "first_name": "Admin",
+    "last_name": "Admin",
+    "phone_number": "",
+    "date_joined": "2026-03-08T09:09:47.825Z",
+    "profile_image": "",
+    "terms_accepted": false,
+    "is_active": true,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$kKol8m3qUt8aZZZW3ddcjS$6VY9Qs/gIVsWS422QyypbeNgUjnqWSJyr4F1Mq+R9uY=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "jkow@mail.com",
+    "first_name": "Janusz",
+    "last_name": "Kowalski",
+    "phone_number": "+48788475345",
+    "date_joined": "2026-03-08T09:12:37.221Z",
+    "profile_image": "",
+    "terms_accepted": true,
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$RuInG2qUlWBd2P3bhq3JMt$x+VwmfmfTJ+M2rZDCHH8cx7YkJ4cU7PdwCxy9hI7Kc0=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "ajas@mail.com",
+    "first_name": "Anna",
+    "last_name": "Jaskółka",
+    "phone_number": "+48788475916",
+    "date_joined": "2026-03-08T09:13:33.791Z",
+    "profile_image": "",
+    "terms_accepted": true,
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$kECwHE8I5j1LJevTvot2Br$mlaXGi7351S5c+lUr1Gu4jI4Fvh7Q/mVN0V03d+Lhk4=",
+    "last_login": null,
+    "is_superuser": false,
+    "email": "mtra@mail.com",
+    "first_name": "Magdalena",
+    "last_name": "Trawa",
+    "phone_number": "+48788727345",
+    "date_joined": "2026-03-08T09:14:33.910Z",
+    "profile_image": "",
+    "terms_accepted": true,
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "listings.rentobject",
+  "pk": 2,
+  "fields": {
+    "name": "Small apartment in Gdańsk",
+    "rental_type": "apartment",
+    "rooms": 2,
+    "area": 38.21,
+    "owner": 2,
+    "address": "Kołobrzeska 27A/19",
+    "town": "Gdańsk",
+    "day_price_cents": 30000,
+    "pets_allowed": false,
+    "own_kitchen": true,
+    "own_bathroom": true,
+    "parking_place": true,
+    "description": "Small and cozy apartment in a Przymorze district of Gdańsk, Poland. 15 minutes of walk from the sea.",
+    "reservation_edit_deadline": 5,
+    "reservation_break_days": 1,
+    "check_in_start_hour": "06:00:00",
+    "check_in_end_hour": "22:00:00",
+    "check_out_start_hour": "06:00:00",
+    "check_out_end_hour": "22:00:00",
+    "advance_days": 10,
+    "max_advance_days": 100
+  }
+},
+{
+  "model": "listings.rentobject",
+  "pk": 4,
+  "fields": {
+    "name": "Large house in Łomianki (near Warsaw)",
+    "rental_type": "cottage",
+    "rooms": 5,
+    "area": 131.0,
+    "owner": 1,
+    "address": "Długa 29",
+    "town": "Łomianki",
+    "day_price_cents": 40000,
+    "pets_allowed": false,
+    "own_kitchen": true,
+    "own_bathroom": true,
+    "parking_place": true,
+    "description": "",
+    "reservation_edit_deadline": 5,
+    "reservation_break_days": 1,
+    "check_in_start_hour": "07:00:00",
+    "check_in_end_hour": "20:00:00",
+    "check_out_start_hour": "07:00:00",
+    "check_out_end_hour": "20:00:00",
+    "advance_days": 7,
+    "max_advance_days": 365
+  }
+},
+{
+  "model": "listings.rentobject",
+  "pk": 5,
+  "fields": {
+    "name": "Luxury Apartment in Warsaw",
+    "rental_type": "apartment",
+    "rooms": 3,
+    "area": 74.29,
+    "owner": 5,
+    "address": "Marcina Kasprzaka 67/45",
+    "town": "Warsaw",
+    "day_price_cents": 40000,
+    "pets_allowed": false,
+    "own_kitchen": true,
+    "own_bathroom": true,
+    "parking_place": true,
+    "description": "",
+    "reservation_edit_deadline": 7,
+    "reservation_break_days": 1,
+    "check_in_start_hour": "08:00:00",
+    "check_in_end_hour": "20:00:00",
+    "check_out_start_hour": "08:00:00",
+    "check_out_end_hour": "20:00:00",
+    "advance_days": 7,
+    "max_advance_days": 120
+  }
+},
+{
+  "model": "listings.rentobject",
+  "pk": 6,
+  "fields": {
+    "name": "Room in a old cottage next to a lake",
+    "rental_type": "room",
+    "rooms": 1,
+    "area": 14.0,
+    "owner": 2,
+    "address": "Polna 7",
+    "town": "Giżycko",
+    "day_price_cents": 23000,
+    "pets_allowed": true,
+    "own_kitchen": true,
+    "own_bathroom": true,
+    "parking_place": true,
+    "description": "",
+    "reservation_edit_deadline": 7,
+    "reservation_break_days": 0,
+    "check_in_start_hour": "08:00:00",
+    "check_in_end_hour": "20:00:00",
+    "check_out_start_hour": "08:00:00",
+    "check_out_end_hour": "20:00:00",
+    "advance_days": 7,
+    "max_advance_days": 365
+  }
+},
+{
+  "model": "listings.rentobject",
+  "pk": 7,
+  "fields": {
+    "name": "Modern Room in Szczecin",
+    "rental_type": "room",
+    "rooms": 1,
+    "area": 12.0,
+    "owner": 2,
+    "address": "Morska 21/13",
+    "town": "Szczecin",
+    "day_price_cents": 31000,
+    "pets_allowed": true,
+    "own_kitchen": true,
+    "own_bathroom": true,
+    "parking_place": true,
+    "description": "",
+    "reservation_edit_deadline": 7,
+    "reservation_break_days": 0,
+    "check_in_start_hour": "08:00:00",
+    "check_in_end_hour": "20:00:00",
+    "check_out_start_hour": "08:00:00",
+    "check_out_end_hour": "20:00:00",
+    "advance_days": 7,
+    "max_advance_days": 365
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 2,
+  "fields": {
+    "rent_object": 2,
+    "image": "rent_objects/IMG_20241210_150612_bRbYBbJ.jpg",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 3,
+  "fields": {
+    "rent_object": 4,
+    "image": "rent_objects/a1_o7RNgol.png",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 4,
+  "fields": {
+    "rent_object": 4,
+    "image": "rent_objects/a2_k6h9Tfy.png",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 5,
+  "fields": {
+    "rent_object": 4,
+    "image": "rent_objects/a4_eFJFkLf.png",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 6,
+  "fields": {
+    "rent_object": 6,
+    "image": "rent_objects/DSCN3929_eR0ccYA.JPG",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 7,
+  "fields": {
+    "rent_object": 6,
+    "image": "rent_objects/IMG_20220810_104520_jObQ5Vs.jpg",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 8,
+  "fields": {
+    "rent_object": 5,
+    "image": "rent_objects/13_8a4ic6i.png",
+    "index": 0
+  }
+},
+{
+  "model": "listings.rentobjectimage",
+  "pk": 9,
+  "fields": {
+    "rent_object": 7,
+    "image": "rent_objects/b1_TFYm8yJ.png",
+    "index": 0
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 1,
+  "fields": {
+    "rating": 5,
+    "author": 2,
+    "object": 2,
+    "description": "Sehr gut.",
+    "modified": "2026-03-07T17:57:58.415Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 2,
+  "fields": {
+    "rating": 4,
+    "author": 1,
+    "object": 2,
+    "description": "Good and clean. Acceptable price.",
+    "modified": "2026-03-07T18:08:40.522Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 3,
+  "fields": {
+    "rating": 4,
+    "author": 2,
+    "object": 4,
+    "description": "Cool.",
+    "modified": "2026-03-08T09:02:59.814Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 4,
+  "fields": {
+    "rating": 5,
+    "author": 2,
+    "object": 5,
+    "description": "Great place.",
+    "modified": "2026-03-08T09:21:53.177Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 5,
+  "fields": {
+    "rating": 4,
+    "author": 4,
+    "object": 5,
+    "description": "Decent, but expensive.",
+    "modified": "2026-03-08T09:28:15.429Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 6,
+  "fields": {
+    "rating": 3,
+    "author": 5,
+    "object": 6,
+    "description": "Not the best standard. The area is nice.",
+    "modified": "2026-03-08T09:28:56.055Z"
+  }
+},
+{
+  "model": "reviews.review",
+  "pk": 7,
+  "fields": {
+    "rating": 5,
+    "author": 1,
+    "object": 5,
+    "description": "Really nice.",
+    "modified": "2026-03-08T09:30:25.902Z"
+  }
+},
+{
+  "model": "reservations.reservation",
+  "pk": 2,
+  "fields": {
+    "object": 2,
+    "user": 1,
+    "created_at": "2026-03-07T18:08:57.354Z",
+    "start_date": "2026-03-21",
+    "end_date": "2026-03-22",
+    "day_price_cents": 30000
+  }
+},
+{
+  "model": "reservations.reservation",
+  "pk": 3,
+  "fields": {
+    "object": 7,
+    "user": 6,
+    "created_at": "2026-03-08T09:26:57.032Z",
+    "start_date": "2026-03-30",
+    "end_date": "2026-03-31",
+    "day_price_cents": 31000
+  }
+},
+{
+  "model": "reservations.reservation",
+  "pk": 4,
+  "fields": {
+    "object": 5,
+    "user": 1,
+    "created_at": "2026-03-08T09:27:32.706Z",
+    "start_date": "2026-04-25",
+    "end_date": "2026-04-26",
+    "day_price_cents": 40000
+  }
+},
+{
+  "model": "reservations.reservation",
+  "pk": 5,
+  "fields": {
+    "object": 7,
+    "user": 1,
+    "created_at": "2026-03-08T09:31:41.387Z",
+    "start_date": "2026-03-28",
+    "end_date": "2026-03-28",
+    "day_price_cents": 31000
+  }
+}
+]

@@ -27,7 +27,7 @@ function ProfileEdit() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('https://127.0.0.1:8000/users/me/', {
+    fetch('http://localhost:8000/users/me/', {
       method: "GET",
       credentials: "include",
     })
@@ -74,7 +74,7 @@ function ProfileEdit() {
     }
 
     try {
-      const res = await fetch(`https://127.0.0.1:8000/users/${userId.current}/`, {
+      const res = await fetch(`http://localhost:8000/users/${userId.current}/`, {
         method: "PATCH",
         credentials: "include",
         body: formData,
@@ -106,7 +106,7 @@ function ProfileEdit() {
     }
 
     try {
-      const res = await fetch(`https://127.0.0.1:8000/users/auth/change-password/`, {
+      const res = await fetch(`http://localhost:8000/users/auth/change-password/`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         credentials: "include",

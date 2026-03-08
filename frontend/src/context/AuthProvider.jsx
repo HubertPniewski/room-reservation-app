@@ -1,3 +1,5 @@
+import api from "../api.js";
+
 // AuthContext.js
 import { useState, useEffect } from "react";
 import { AuthContext } from "./AuthContext";
@@ -8,16 +10,13 @@ export function AuthProvider({ children }) {
 
   // check if an user is logged in after the app start
   useEffect(() => {
-    fetch("https://127.0.0.1:8000/users/me/", {
-      method: "GET",
-      credentials: "include",
-    })
+    api.get("users/me/")
       .then(res => {
-        if (!res.ok) throw new Error("Not authenticated");
-        return res.json();
+        setUser(res.data);
       })
-      .then(data => setUser(data))
-      .catch(() => setUser(null))
+      .catch(() => {
+        setUser(null);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -36,94 +35,45 @@ export function AuthProvider({ children }) {
   }, [user]);
 
   async function login(email, password) {
-    const res = await fetch("https://127.0.0.1:8000/users/auth/login/", {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json"},
-      body: JSON.stringify({ email, password }),
-    });
-
-    if (!res.ok) {
+    try {
+      await api.post("users/auth/login/", { email, password });
+      const meRes = await api.get("users/me/");
+      const userData = meRes.data;
+      setUser(userData);
+      return userData;
+    } catch (e) {
       let errMessage = "Login failed";
-
-      try {
-        const errData = await res.json();
-
-        if (errData.detail) {
-          errMessage = errData.detail;
-        } else {
-          errMessage = JSON.stringify(errData);
-        }
-      } catch (err) {
-        errMessage = err.message;
+      if (e.response) {
+        errMessage = e.response?.data?.detail || JSON.stringify(e.response.data);
+      } else {
+        errMessage = e.message;
       }
       throw new Error(errMessage);
     }
-
-    // get user after login
-    const meRes = await fetch("https://127.0.0.1:8000/users/me/", {
-      method: "GET",
-      credentials: "include",
-    });
-
-    if (!meRes.ok) throw new Error("Failed to fetch user");
-
-    const userData = await meRes.json();
-    setUser(userData);
-    return userData;
   }
 
   async function logout() {
-    await fetch("https://127.0.0.1:8000/users/auth/logout/", {
-      method: "POST",
-      credentials: "include",
-    });
+    api.post("users/auth/logout/");
     setUser(null);
   }
 
   async function register(userData) {
-    const res = await fetch("https://127.0.0.1:8000/users/", {
-      method: "POST",
-      body: userData,
-      credentials: "include",
-    });
-     
-    if (!res.ok) {   
-      let errMessage = "Registration failed";
-      try {
-        const errData = await res.json();
-
-        if (errData.detail) {
-          errMessage = errData.detail;
-          
-        } else {
-          errMessage = JSON.stringify(errData);
-          console.log(errMessage);
-        }
-      } catch (err) {
-        errMessage = err.message;
-      }
-      throw new Error(errMessage);
+    try {
+      const res = await api.post("users/", userData);
+      return res.data;
+    } catch (e) {
+      throw new Error(e.response?.data?.detail || "Registration Failed");
     }
-
-    alert("Registration succeeded!");
-    return res.json();
   }
 
   async function refreshToken() {
-    const res = await fetch("https://127.0.0.1:8000/users/auth/token/refresh/", {
-      method: "POST",
-      credentials: "include",
-    });
-
-    if (!res.ok) {
-      console.error("Failed to refresh token, logging out");
+    try {
+      const res = await api.post("users/auth/token/refresh/");
+      return res.data;
+    } catch (e) {
       setUser(null);
-      throw new Error("Failed to refresh token");
+      throw new Error (e.response?.data?.detail || "Token refresh failed");
     }
-
-    const data = await res.json();
-    return data.access;
   }
 
   return (

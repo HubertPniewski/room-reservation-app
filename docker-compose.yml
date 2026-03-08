@@ -1,0 +1,47 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=booking_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres_pass
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d booking_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  backend:
+    build: ./backend
+    command: >
+      sh -c "python booking_app/manage.py migrate && 
+             python booking_app/manage.py loaddata seed_data.json || true &&
+             python booking_app/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_NAME=booking_db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres_pass
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DEBUG=True
+    depends_on:
+      db:
+        condition: service_healthy # waiting for the db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:

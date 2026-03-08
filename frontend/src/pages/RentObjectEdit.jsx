@@ -9,7 +9,7 @@ function RentObjectEdit() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    fetch(`https://127.0.0.1:8000/listings/${id}/`)
+    fetch(`http://localhost:8000/listings/${id}/`)
       .then(res => res.json())
       .then(data => {
         setObject(data);

@@ -73,20 +73,20 @@ function Reservation() {
 
   useEffect(() => {
     let objectData = null;
-    fetch(`https://127.0.0.1:8000/listings/${id}/`)
+    fetch(`http://localhost:8000/listings/${id}/`)
       .then(res => res.json())
       .then(data => {
         setObject(data);
         objectData = data;
         return data;
       })
-      .then(data => fetch(`https://127.0.0.1:8000/users/${data.owner}/`))
+      .then(data => fetch(`http://localhost:8000/users/${data.owner}/`))
       .then(res => res.json())
       .then(data => {
         setObjectOwner(data);
       })
       .then(() => {
-        return fetch(`https://127.0.0.1:8000/reservations/object/${id}/`);
+        return fetch(`http://localhost:8000/reservations/object/${id}/`);
       })
       .then(res => res.json())
       .then(data => {
@@ -173,7 +173,7 @@ function Reservation() {
     };
     if (termsAccepted) {
       try {
-        const res = await fetch("https://127.0.0.1:8000/reservations/", {
+        const res = await fetch("http://localhost:8000/reservations/", {
           method: "POST",
           credentials: "include",
           headers: { "Content-Type": "application/json"},

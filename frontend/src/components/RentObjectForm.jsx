@@ -130,8 +130,8 @@ function RentObjectForm({ object }) {
     });
 
     const url = object ?
-      `https://127.0.0.1:8000/listings/${object.id}/` : // edit existing one
-      "https://127.0.0.1:8000/listings/";               // add new one
+      `http://localhost:8000/listings/${object.id}/` : // edit existing one
+      "http://localhost:8000/listings/";               // add new one
     const method = object ? "PATCH" : "POST";
 
     const res = await fetch(url, {

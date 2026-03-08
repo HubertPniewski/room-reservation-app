@@ -24,7 +24,7 @@ function ReservationDetails() {
 
   useEffect(() => {
     // fetch reservation
-    fetch(`https://127.0.0.1:8000/reservations/${id}/`, {
+    fetch(`http://localhost:8000/reservations/${id}/`, {
       method: "GET",
       credentials: "include",
     })
@@ -32,7 +32,7 @@ function ReservationDetails() {
       .then(data => {
         setReservation(data);
         // fetch object
-        return fetch(`https://127.0.0.1:8000/listings/${data.object}/`, {
+        return fetch(`http://localhost:8000/listings/${data.object}/`, {
           method: "GET",
           credentials: "include",
         });
@@ -41,7 +41,7 @@ function ReservationDetails() {
       .then(data => {
         setObject(data);
         // fetch object owner
-        return fetch(`https://127.0.0.1:8000/users/${data.owner}/`, {
+        return fetch(`http://localhost:8000/users/${data.owner}/`, {
           method: "GET",
           credentials: "include",
         });
@@ -55,7 +55,7 @@ function ReservationDetails() {
 
   useEffect(() => {
     if (!reservation) return;
-    fetch(`https://127.0.0.1:8000/users/${reservation.user}/`, {
+    fetch(`http://localhost:8000/users/${reservation.user}/`, {
       method: "GET",
       credentials: "include",
     })
@@ -91,7 +91,7 @@ function ReservationDetails() {
   };
 
   function handleDeleteReservation() {
-    fetch(`https://127.0.0.1:8000/reservations/${id}/`, {
+    fetch(`http://localhost:8000/reservations/${id}/`, {
       method: "DELETE",
       credentials: "include",
     })

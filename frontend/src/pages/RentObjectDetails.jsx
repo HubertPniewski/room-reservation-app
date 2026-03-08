@@ -70,7 +70,7 @@ function RentObjectDetails() {
   useEffect(() => {
     let isMounted = true;
 
-    fetch(`https://127.0.0.1:8000/reviews/object/${id}/?page=${reviewsPage}`)
+    fetch(`http://localhost:8000/reviews/object/${id}/?page=${reviewsPage}`)
       .then(res => res.json())
       .then(async data => {
         if (!isMounted) return;
@@ -84,7 +84,7 @@ function RentObjectDetails() {
         if (!data || data.length === 0) return;
 
         const authors = await Promise.all(data.results.map(review => {
-          return fetch(`https://127.0.0.1:8000/users/${review.author}/`)
+          return fetch(`http://localhost:8000/users/${review.author}/`)
             .then(res => res.json());
           } 
         ));

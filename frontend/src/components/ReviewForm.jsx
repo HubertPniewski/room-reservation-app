@@ -47,7 +47,7 @@ function ReviewForm({ review, author, object }) {
     if (editMode) {
       const url = newReview ? `object/${object?.id}` : `${review?.id}`;
       const method = newReview ? "POST" : "PATCH";
-      await fetch(`https://127.0.0.1:8000/reviews/${url}/`, {
+      await fetch(`http://localhost:8000/reviews/${url}/`, {
         method: method,
         credentials: "include",
         headers: {
@@ -69,7 +69,7 @@ function ReviewForm({ review, author, object }) {
   }
 
   async function handleDeleteReview() {
-    await fetch(`https://127.0.0.1:8000/reviews/${review?.id}/`, {
+    await fetch(`http://localhost:8000/reviews/${review?.id}/`, {
       method: "DELETE",
       credentials: "include",
     })

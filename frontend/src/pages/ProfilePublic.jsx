@@ -11,7 +11,7 @@ function ProfilePublic() {
   const [objects, setObjects] = useState([]);
 
   useEffect(() => {
-    fetch(`https://127.0.0.1:8000/users/${id.id}/`, {
+    fetch(`http://localhost:8000/users/${id.id}/`, {
       method: "GET",
       credentials: "include",
     })
@@ -21,7 +21,7 @@ function ProfilePublic() {
       })
       .then(data => {
         setUser(data);
-        return fetch(`https://127.0.0.1:8000/listings/user/${id.id}/`);
+        return fetch(`http://localhost:8000/listings/user/${id.id}/`);
       })
       .then(res => {
         if (!res.ok) return { results: [] };

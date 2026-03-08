@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import SearchBar from "../components/SearchBar";
 import ObejctsList from "../components/ObjectsList";
 import classes from "./Home.module.css";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
+import api from "../api.js";
 
 
 function Home() {
@@ -10,56 +11,74 @@ function Home() {
   const [objects, setObjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const { filters, setFilters, currentPage, sort, setSort, setCurrentPage } = useOutletContext();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [totalPages, setTotalPages] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
 
-  function filtersToQueryString(filters) {
-    return Object.entries(filters)
-      .filter(([_, v]) => v !== "" && v !== false) // eslint-disable-line no-unused-vars
-      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(v)}`)
-      .join("&");
+  function cleanParams(filters, sort, page) {
+    const params = { ...filters, sort, page }
+    if (params.max_price === 5000) delete params.max_price;
+    if (params.max_rooms === 10) delete params.max_rooms;
+    if (params.max_area === 300) delete params.max_area;
+    if (params.edit_deadline === 50) delete params.edit_deadline;
+    if (params.min_advance === 60) delete params.min_advance;
+    if (params.max_advance === 500) delete params.max_advance;
+
+    Object.keys(params).forEach(key => {
+      if (params[key] === "" || params[key] === false || params[key] === undefined) {
+        delete params[key];
+      }
+    });
+    return params;
   }
 
-  function handleSearch(filters) {
-    let query = filtersToQueryString(filters);
-    
-    query = query.replace("max_price=5000", "");
-    query = query.replace("max_rooms=10", "");
-    query = query.replace("max_area=300", "");
-    query = query.replace("edit_deadline=50", "");
-    query = query.replace("min_advance=60", "");
-    query = query.replace("max_advance=500", "");
+  async function fetchListings() {
+    setLoading(true);
+    try {
+      const params = cleanParams(filters, sort, currentPage);
+      const res = await api.get("listings/", { params });
 
-    fetch(`https://127.0.0.1:8000/listings/?sort=${sort}&${query}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setObjects(data.results);
-        setLoading(false);
-      });
-  };
+      setObjects(res.data.results);
+      setTotalResults(res.data.count);
+      setTotalPages(Math.ceil(res.data.count / 20));
+    } catch (e) {
+      console.error("Fetch listings error: ", e);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   function handleSearchSubmit(data) {
+    setCurrentPage(1);
     setFilters(data);
-    //setPagesNumber(1);
-    handleSearch(data);
   }
 
   useEffect(() => {
-    async function fetchPage() {
-      setLoading(true);
-      const query = filtersToQueryString(filters);
-      const res = await fetch(`https://127.0.0.1:8000/listings/?${query}&sort=${sort}&page=${currentPage}`);
-      const data = await res.json();
-      setObjects(data.results);
-      setTotalResults(data.count);
-      setTotalPages(Math.ceil(data.count / 20));
-      setLoading(false);
+    const urlPage = searchParams.get("page");
+    const urlSort = searchParams.get("sort");
+    if (urlPage) setCurrentPage(parseInt(urlPage));
+    if (urlSort) setSort(urlSort);
+
+    const urlFilters= {};
+    searchParams.forEach((value, key) => {
+      if (key !== "page" && key !== "sort") urlFilters[key] = value;
+    });
+
+    if (Object.keys(urlFilters).length > 0) {
+      setFilters(prev => ({ ...prev, ...urlFilters }));
     }
-    fetchPage();
+
+    fetchListings();
+  }, []);
+
+  useEffect(() => {
+    fetchListings();
+    const params = cleanParams(filters, sort, currentPage);
+    setSearchParams(params, { replace: true });
   }, [filters, sort, currentPage]);
 
+
   if (loading) return <p>Loading...</p>
-  console.log()
   return (
     <div className={classes.homeLayout}>
       <SearchBar onSearch={handleSearchSubmit} prevFilters={filters} />

@@ -62,15 +62,28 @@ The project was developed as a personal portfolio project using Django and React
 - PostgreSQL
 
 ### Backend
+# Linux:
+```bash
+cd backend
+python3 -m venv venv
+source venv/bin/activate
+pip install python-dotenv
+pip install -r requirements.txt
+python booking_app/manage.py migrate
+python booking_app/manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+```
+# Windows:
 ```bash
 cd backend
 python -m venv venv
 venv\Scripts\activate
+pip install python-dotenv
 pip install -r requirements.txt
 python booking_app/manage.py migrate
 python booking_app/manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
 ```
 Backend will be available at: https://localhost:8000/
+
 
 ### Frontend
 ```bash
@@ -125,3 +138,4 @@ and used for demonstration purposes only
 - Using Git with regular commits during development
 
 The project was developed iteratively over several months with regular commits.
+

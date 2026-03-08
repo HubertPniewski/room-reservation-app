@@ -57,41 +57,37 @@ The project was developed as a personal portfolio project using Django and React
 ## Running the project locally
 
 ### Prerequisites
-- Python 3.10+
-- Node.js 18+
-- PostgreSQL
+- Docker
 
-### Backend
-# Linux:
+### Running the project
+1. Clone the repository to a local folder:
 ```bash
-cd backend
-python3 -m venv venv
-source venv/bin/activate
-pip install python-dotenv
-pip install -r requirements.txt
-python booking_app/manage.py migrate
-python booking_app/manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+git clone https://github.com/HubertPniewski/room-reservation-app.git
 ```
-# Windows:
+If the URL is wrong, get it from the project repository manually.
+
+2. Navigate to the main project folder: 
 ```bash
-cd backend
-python -m venv venv
-venv\Scripts\activate
-pip install python-dotenv
-pip install -r requirements.txt
-python booking_app/manage.py migrate
-python booking_app/manage.py runserver_plus --cert-file certs/localhost+1.pem --key-file certs/localhost+1-key.pem
+cd room-reservation-app
 ```
-Backend will be available at: https://localhost:8000/
+
+3. Launch the app with Docker:
+```bash
+docker compose up --build
+```
+
+The project comes with automatically added basic test data.
+
+Frontend will be available at: http://localhost:5173/
+Backend will be available at: http://localhost:8000/
+Admin panel will be available at: http://localhost:8000/admin/
 
 
-### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Frontend will be available at: https://localhost:5173/
+Note: The app runs on standard HTTP. If your browser automatically redirects to HTTPS and shows a certificate error, please try opening the link in Incognito Mode or clear your browser's HSTS cache for localhost
+
+### Test Credentials
+**Sample User:** Email: `mnow@mail.com`, Password: `haslo123`
+You can login with this sample account to test applications functions without creating a new account. 
 
 ## Environment variables
 
@@ -105,6 +101,8 @@ Create a `.env` file in the project root with the following variables:
 - DB_PASSWORD
 - DB_HOST
 - DB_PORT
+
+By default, the application will automatically create example .env file. It's for presentation purposes only, not for the production.
 
 ### Admin
 Admin credentials can be created locally using: 
